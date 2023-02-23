@@ -1,21 +1,29 @@
 import { createStore } from 'vuex'
 
+// 引入vuex 数据持久化
+import createPersistedState from 'vuex-persistedstate'
 
+
+// 数据模块
+import user from './modules/user.js'
+import cart from './modules/cart.js'
+import category from './modules/category.js'
+
+
+
+// 配置数据据模块
 let store = createStore({
-    state() {
-        return {
-            name: "项目初始化"
-        }
+    // 模块分组
+    modules: {
+        user,
+        cart,
+        category,
     },
-    getters: {
+    plugins: [createPersistedState({
+        key: 'erabbit-client-pc-store',
+        paths: ['user', 'cart'],
+    })]
 
-    },
-    mutations: {
-
-    },
-    actions: {
-
-    }
 })
 
 
