@@ -28,8 +28,6 @@ instance.interceptors.request.use(function (config) {
     return Promise.reject(err)
 })
 
-
-
 // 响应拦截器
 instance.interceptors.response.use((res) => {
     return res.data
@@ -51,7 +49,6 @@ instance.interceptors.response.use((res) => {
     }
     return Promise.reject(err)
 })
-
 
 // 请求工具函数
 // 路径
