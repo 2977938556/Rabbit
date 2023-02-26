@@ -1,9 +1,9 @@
 <template>
     <!-- 顶部通栏组件 -->
-    <nav>顶部通栏</nav>
+    <AppTopNavBar />
 
     <!-- 头部组件 -->
-    <header>头部组件</header>
+    <AppHeader />
 
     <!-- 内容区 -->
     <div class="main">
@@ -11,5 +11,54 @@
     </div>
 
     <!-- 底部组件 -->
-    <footer>底部组件</footer>
+    <AppFooter />
 </template>
+
+
+
+<script>
+
+// 导入组件
+import AppTopNavBar from '@/components/app-topnavbar.vue';
+import AppHeader from '@/components/app-header.vue';
+import AppFooter from '@/components/app-footer.vue';
+
+
+// 导入vuex
+import { useStore } from 'vuex'
+
+
+
+
+export default {
+    setup() {
+        let store = useStore()
+        store.dispatch('category/getList');
+
+
+
+
+
+    },
+
+
+
+
+    components: {
+        AppTopNavBar,
+        AppHeader,
+        AppFooter,
+    }
+
+
+
+}
+
+
+
+</script>
+
+
+
+
+<style scoped></style>

@@ -14,5 +14,11 @@ import store from '@/store/index.js'
 app.use(store)
 
 
+// 重置样式
+import 'normalize.css'
+import '@/assets/styles/common.less'
+
+
+
 
 app.mount('#app')
