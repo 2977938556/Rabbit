@@ -37,7 +37,6 @@ export default {
         })
 
 
-
         // 显示
         let showCate = (item) => {
             store.commit('category/SHOWCATE', item.id)
@@ -47,8 +46,6 @@ export default {
         let hideCate = (item) => {
             store.commit('category/HIDECATE', item.id)
         }
-
-
 
 
         return { classIfy, showCate, hideCate }

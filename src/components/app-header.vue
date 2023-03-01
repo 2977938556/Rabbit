@@ -7,8 +7,6 @@
             <!-- 头部分类组件 -->
             <AppHeaderNav />
 
-
-
             <div class="search">
                 <i class="iconfont icon-search"></i>
                 <input type="text" placeholder="搜一搜">

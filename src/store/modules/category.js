@@ -8,13 +8,18 @@ import { findAllCategory } from '@/api/category.js'
 
 
 
+
+
+
 // 分类模块
 export default {
     namespaced: true,
     state() {
         return {
             // 由于假数据没有name属性，所以需要添加name属性
-            list: topCategory.forEach(item => { name: item }),
+            list: topCategory.map(item => {
+                return { name: item }
+            })
         }
     },
 

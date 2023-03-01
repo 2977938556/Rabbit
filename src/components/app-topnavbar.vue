@@ -28,13 +28,13 @@ import { useStore } from 'vuex'
 
 export default {
     setup() {
-        let route = useStore();
+        let store = useStore();
 
 
 
         // 设置是否显示登录状态及注册
         let ShowNavBar = computed(() => {
-            let { profile } = route.state.user;
+            let { profile } = store.state.user;
             if (profile.token) {
                 return profile;
             } else {

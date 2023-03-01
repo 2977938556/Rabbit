@@ -1,11 +1,26 @@
 <template>
-    <div class="container">
-        <h1>首页</h1>
+    <!-- 最大的容器 -->
+    <div class="page-home">
+        <div class="container">
+            <!-- 首页入口 -->
+            <div class="home-entry">
+                <!-- 左侧分类 -->
+                <HomeCategory />
+                <!--  左侧轮播图页面 -->
+            </div>
+        </div>
+
     </div>
 </template>
 
 <script>
+import HomeCategory from '@/view/home/components/home-category.vue';
+
 export default {
+    name: "Home",
+    components: {
+        HomeCategory,
+    }
 
 }
 
@@ -14,9 +29,5 @@ export default {
 
 </script>
 
-<style lang="less" scoped>
-h1 {
-    color: @priceColor;
-}
-</style>
+<style lang="less" scoped></style>
 
