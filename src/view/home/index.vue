@@ -17,23 +17,16 @@
         </div>
 
 
-        <!--产品精选 和人气爆款 -->
+        <!--产品精选 和人气爆款  品牌推荐-->
         <div class="home-new">
             <div class="container">
                 <HomeNew />
                 <HomeHot />
+                <HomeBrand />
+                <HomeProduct />
+                <HomeSpecial />
             </div>
         </div>
-
-
-        <button @click="show = true">显示</button>
-        <button @click="show = false">隐藏</button>
-
-        <Transition>
-            <div class="box" v-show="show">
-                <h1>Hello Transition</h1>
-            </div>
-        </Transition>
 
 
     </div>
@@ -51,6 +44,21 @@ import HomeNew from '@/view/home/components/home-new.vue';
 
 // 03 人气爆款
 import HomeHot from '@/view/home/components/home-hot.vue';
+
+//04 热门品牌
+import HomeBrand from '@/view/home/components/home-brand.vue'
+
+// 05 商品专区
+import HomeProduct from '@/view/home/components/home-product.vue';
+
+
+
+// 06 最新专题
+import HomeSpecial from '@/view/home/components/home-special.vue'
+
+
+
+
 import { ref } from 'vue';
 
 
@@ -61,7 +69,11 @@ export default {
         HomeCategory,
         HomeBanner,
         HomeNew,
-        HomeHot
+        HomeHot,
+        HomeBrand,
+        HomeProduct,
+        HomeSpecial
+
     },
     setup() {
         let show = ref(true);
@@ -78,50 +90,6 @@ export default {
 
 
 </script>
-
-<style lang="less" scoped>
-.box {
-    width: 300px;
-    height: 300px;
-    text-align: center;
-    background: orange;
-}
-
-
-
-// 进入
-.v-enter-from {
-    width: 0px;
-    height: 0px;
-}
-
-.v-enter-active {
-    transition: 0.5s ease;
-}
-
-.v-enter-to {
-    width: 300px;
-    height: 300px;
-}
-
-
-
-.v-leave-from {
-    width: 300px;
-    height: 300px;
-}
-
-.v-leave-active {
-    transition: all 0.5s ease;
-}
-
-.v-leave-to {
-    width: 0px;
-    height: 0px;
-
-}
-</style>
-
 
 
 

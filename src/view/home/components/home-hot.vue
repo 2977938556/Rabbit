@@ -1,5 +1,5 @@
 <template>
-    <div class="home-new">
+    <div class="home-new" ref="target">
         <HomePanel title="人气推荐" sub-title="人气爆款 不容错过">
             <!-- 插入默右侧按钮的内容 -->
             <!-- 人气推荐是没有更多选项的 -->
@@ -7,16 +7,22 @@
                 <XtxMore />
             </template> -->
 
-            <!-- 默认插槽内容 -->
-            <ul class="goods-list">
-                <li v-for="item in goods" :key="item">
-                    <RouterLink :to="`/category/${item.id}`">
-                        <img :src="item.picture" alt="">
-                        <p class="name ellipsis">{{ item.title }}</p>
-                        <p class="price desc">{{ item.alt }}</p>
-                    </RouterLink>
-                </li>
-            </ul>
+            <Transition name="fade">
+                <!-- 默认插槽内容 -->
+                <ul class="goods-list" v-if="goods.length">
+                    <li v-for="item in goods" :key="item">
+                        <RouterLink :to="`/category/${item.id}`">
+                            <img v-lazy="item.picture" alt="">
+                            <p class="name ellipsis">{{ item.title }}</p>
+                            <p class="price desc">{{ item.alt }}</p>
+                        </RouterLink>
+                    </li>
+                </ul>
+
+                <HomeSkeleton v-else />
+            </Transition>
+
+
         </HomePanel>
 
     </div>
@@ -30,23 +36,25 @@ import { findHot } from '@/api/home.js';
 
 // 导入布局组件
 import HomePanel from '@/view/home/components/home-panel.vue';
-import { ref } from 'vue';
+
+
+// 导入骨架组件
+import HomeSkeleton from '@/view/home/components/home-skeleton.vue';
+
+
+// 导入vueuse/core
+import { Datalazyloading } from '@/hooks/index.js'
 
 export default {
     name: "HomeNew",
     setup() {
-        // 产品数据
-        let goods = ref([]);
 
-        findHot().then(res => {
-            console.log("我的数据", res.result)
-            goods.value = res.result;
-        })
+        let { result, target } = Datalazyloading(findHot);
 
-        return { goods }
+        return { goods: result, target }
 
     },
-    components: { HomePanel }
+    components: { HomePanel, HomeSkeleton }
 }
 
 

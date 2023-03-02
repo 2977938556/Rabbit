@@ -25,7 +25,7 @@ export default {
         // 二级标题
         subTitle: {
             type: String,
-            default: () => "新鲜出品,品质靠谱"
+            default: () => ""
         }
     }
 }

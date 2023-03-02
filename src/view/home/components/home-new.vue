@@ -1,21 +1,25 @@
 <template>
-    <div class="home-new">
+    <div class="home-new" ref="target">
         <HomePanel title="新鲜好物" sub-title="新鲜出炉 品质靠谱">
             <!-- 插入默右侧按钮的内容 -->
             <template #right>
                 <XtxMore />
             </template>
+            <Transition name="fade">
+                <!-- 默认插槽内容 -->
+                <ul class="goods-list" v-if="newMore.length">
+                    <li v-for="item in newMore" :key="item">
+                        <RouterLink :to="`/category/${item.id}`">
+                            <img v-lazy="item.picture" alt="">
+                            <p class="name ellipsis">{{ item.name }}</p>
+                            <p class="price">&yen;{{ item.price }}</p>
+                        </RouterLink>
+                    </li>
+                </ul>
+                <HomeSkeleton v-else />
+            </Transition>
 
-            <!-- 默认插槽内容 -->
-            <ul class="goods-list">
-                <li v-for="item in newMore" :key="item">
-                    <RouterLink :to="`/category/${item.id}`">
-                        <img :src="item.picture" alt="">
-                        <p class="name ellipsis">{{ item.name }}</p>
-                        <p class="price">&yen;{{ item.price }}</p>
-                    </RouterLink>
-                </li>
-            </ul>
+
 
 
         </HomePanel>
@@ -31,7 +35,23 @@ import { findNew } from '@/api/home.js';
 
 // 导入布局组件
 import HomePanel from '@/view/home/components/home-panel.vue';
+
+
+// 导入骨架组件
+import HomeSkeleton from '@/view/home/components/home-skeleton.vue';
+
+
+
+// 导入数据懒加载
+import { Datalazyloading } from '@/hooks/index.js'
+
+
+
+
 import { ref } from 'vue';
+
+
+
 
 export default {
     name: "HomeNew",
@@ -40,19 +60,17 @@ export default {
         // 产品数据
         let newMore = ref([]);
 
-        findNew().then(res => {
-            console.log(res.result)
-            newMore.value = res.result;
-        })
+        //  这个方法会返回两个东西 
+        // result :返回的是一个获取的数据 
+        // targt :绑定需要监听的对象 
+        let { result, target } = Datalazyloading(findNew)
 
-
-
-        return { newMore }
+        return { newMore: result, target }
 
 
 
     },
-    components: { HomePanel }
+    components: { HomePanel, HomeSkeleton }
 }
 
 
