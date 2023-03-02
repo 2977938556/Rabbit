@@ -43,5 +43,6 @@ export default {
             color: @xtxColor;
         }
     }
-}</style>
+}
+</style>
   

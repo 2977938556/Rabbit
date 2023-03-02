@@ -15,3 +15,18 @@ export const findBranner = () => {
 }
 
 
+
+
+// 获取新鲜好物数据
+export const findNew = () => {
+    return request('/home/new', 'get');
+}
+
+
+
+
+// 人气推荐
+export const findHot = () => {
+    return request('/home/hot', 'get');
+}
+
