@@ -20,5 +20,15 @@ import '@/assets/styles/common.less'
 
 
 
+// 注册插件 UI 骨架
+import UI from '@/components/libray/index.js'
+app.use(UI)
+
+
+
+
+
+
+
 
 app.mount('#app')
