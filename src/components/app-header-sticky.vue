@@ -104,7 +104,6 @@ export default {
     }
 
 
-
     // 显示与隐藏
     &.stickys {
         transition: all 0.3s ease-in;

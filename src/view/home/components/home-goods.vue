@@ -17,6 +17,12 @@
 </template>
   
 <script>
+
+//  这个组件是用来渲染卡片的内容数据 
+
+
+
+
 export default {
     name: 'HomeGoods',
     props: {

@@ -29,6 +29,9 @@
 </template>
 
 <script>
+// 这个组件是热门品牌组件
+
+
 // 导入布局组件
 import HomePanel from '@/view/home/components/home-panel.vue'
 

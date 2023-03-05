@@ -5,13 +5,15 @@
 
 // 加载分类效果
 import XtxSkeleton from './xtx-skeleton.vue'
-
 // 轮播图
 import XtxCarousel from './xtx-carousel.vue'
-
-
 // 更多 按钮
 import XtxMore from './xtx-more.vue'
+// 面包屑
+import XtxBread from './xtx-bread.vue'
+// 单项面包屑组件
+import XtxBreadItem from './xtx-bread-item.vue'
+
 
 export default {
     install(app) {
@@ -20,6 +22,8 @@ export default {
         app.component(XtxSkeleton.name, XtxSkeleton)
         app.component(XtxCarousel.name, XtxCarousel)
         app.component(XtxMore.name, XtxMore)
+        app.component(XtxBread.name, XtxBread)
+        app.component(XtxBreadItem.name, XtxBreadItem)
         // 注册图片懒加载效果
         defineDirective(app)
     }

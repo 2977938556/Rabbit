@@ -31,6 +31,12 @@
 
 
 <script>
+// 这个是获取新鲜好物的数据
+
+
+
+
+
 // 获取新鲜好物的接口
 import { findHot } from '@/api/home.js';
 

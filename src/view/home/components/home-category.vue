@@ -56,20 +56,19 @@
                 </li>
             </ul>
 
-
-
-
-
         </div>
-
-
-
 
 
     </div>
 </template>
   
 <script>
+
+// 这个组件是用来渲染分类的数据[子数据]以及品牌数据[字数据]
+
+
+
+
 import { computed, reactive, ref } from 'vue';
 import { useStore } from 'vuex'
 
