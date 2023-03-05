@@ -12,7 +12,7 @@
         <a href="javascript:;" class="carousel-btn next" @click="onchanges(i = i + 1)"><i
                 class="iconfont icon-angle-right"></i></a>
         <div class="carousel-indicator">
-            <span v-for="(items, index) in 5" :key="items" :class="{ active: index == i }"></span>
+            <span v-for="(items, index) in 5" :key="items" @click="i = index" :class="{ active: index == i }"></span>
         </div>
     </div>
 </template>
