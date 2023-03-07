@@ -120,44 +120,6 @@ export default {
 
 
 <style scoped lang="less">
-//  面包屑的过渡动画 2023/3/5
-.fade-right-enter-from {
-    opacity: 0;
-    transform: translate3d(-20px, 0, 0);
-}
-
-.fade-right-enter-active {
-    transition: all 0.5s ease-in-out;
-}
-
-.fade-right-enter-to {
-    opacity: 1;
-    transform: none;
-}
-
-.fade-right-leave-to {
-    opacity: 1;
-    transform: none;
-}
-
-.fade-right-leave-active {
-    transition: all 0.5s ease-in-out;
-}
-
-.fade-right-leave-to {
-    opacity: 0;
-    transform: translate3d(20px, 0, 0);
-}
-
-
-
-
-
-
-
-
-
-
 .top-category {
     h3 {
         font-size: 28px;

@@ -13,6 +13,8 @@ import XtxMore from './xtx-more.vue'
 import XtxBread from './xtx-bread.vue'
 // 单项面包屑组件
 import XtxBreadItem from './xtx-bread-item.vue'
+// 复选框
+import XtxCheckBox from './xtx-checkbox.vue'
 
 
 export default {
@@ -24,6 +26,7 @@ export default {
         app.component(XtxMore.name, XtxMore)
         app.component(XtxBread.name, XtxBread)
         app.component(XtxBreadItem.name, XtxBreadItem)
+        app.component(XtxCheckBox.name, XtxCheckBox)
         // 注册图片懒加载效果
         defineDirective(app)
     }
