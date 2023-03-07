@@ -3,7 +3,7 @@
         <li class="home">
             <RouterLink to="/">首页</RouterLink>
         </li>
-        <li v-for="item in classIfy" :key="item.id" @mouseenter="showCate(item)" @mouseleave="hideCate(item)"
+        <li v-for="item in classIfy" :key="item.id" @mousemove="showCate(item)" @mouseleave="hideCate(item)"
             @click="hideCate(item)">
             <router-link :to="`/category/${item.id}`">{{ item.name }}</router-link>
             <div class="layer" :class="{ open: item.open }">

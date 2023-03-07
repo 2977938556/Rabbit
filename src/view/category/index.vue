@@ -64,7 +64,6 @@ export default {
         //01  这里是获取banner的数据
         let sliders = ref([]);
         findBranner().then(res => {
-            console.log(res)
             sliders.value = res.result;
         })
 
@@ -101,7 +100,9 @@ export default {
 
         // 04 这里使用的是监听函数监听路由的变化如果发生变化了那么就会执行获取数据的函数从而导致组件的刷新
         watch(() => route.params.id, (newVal) => {
-            if (newVal) {
+            //  这里由于是会将二级类目进行发送请求导致请求，所以需要判断一下，
+            // 判断是否有改变数据还有是否 拼接的路径是否等于当前路由的路径 
+            if (newVal && `/category/${newVal}` == route.path) {
                 GetTopCategoryList();
             }
         }, { immediate: true })
@@ -119,10 +120,10 @@ export default {
 
 
 <style scoped lang="less">
-//  面包屑的过渡动画
+//  面包屑的过渡动画 2023/3/5
 .fade-right-enter-from {
     opacity: 0;
-    transform: translate3d(20px, 0, 0);
+    transform: translate3d(-20px, 0, 0);
 }
 
 .fade-right-enter-active {

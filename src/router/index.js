@@ -28,6 +28,14 @@ let routes = [
 let router = createRouter({
     history: createWebHashHistory(),
     routes,
+    scrollBehavior(to, from, savedPosition) {
+        // 如果有 savedPosition，则直接返回保存的位置
+        if (savedPosition) {
+            return savedPosition;
+        }
+        // 否则返回顶部
+        return { top: 0 };
+    }
 })
 
 
