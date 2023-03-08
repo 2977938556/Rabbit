@@ -15,6 +15,8 @@ import XtxBread from './xtx-bread.vue'
 import XtxBreadItem from './xtx-bread-item.vue'
 // 复选框
 import XtxCheckBox from './xtx-checkbox.vue'
+// 无限加载组件
+import XtxinfiniteLoding from './xtx-infinite-loding.vue'
 
 
 export default {
@@ -27,6 +29,7 @@ export default {
         app.component(XtxBread.name, XtxBread)
         app.component(XtxBreadItem.name, XtxBreadItem)
         app.component(XtxCheckBox.name, XtxCheckBox)
+        app.component(XtxinfiniteLoding.name, XtxinfiniteLoding)
         // 注册图片懒加载效果
         defineDirective(app)
     }

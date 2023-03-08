@@ -17,8 +17,8 @@
             </a>
         </div>
         <div class="check">
-            <XtxCheckBox v-model="sortParams.inventory">仅显示有货商品</XtxCheckBox>
-            <XtxCheckBox v-model="sortParams.onlyDiscount">仅显示特惠商品</XtxCheckBox>
+            <XtxCheckBox @change="changeBox" v-model="sortParams.inventory">仅显示有货商品</XtxCheckBox>
+            <XtxCheckBox @change="changeBox" v-model="sortParams.onlyDiscount">仅显示特惠商品</XtxCheckBox>
         </div>
 
 
@@ -33,7 +33,8 @@ export default {
     // 3. 在操作排序组件的时候，需要反馈给数据对象
     // sortField====>publishTime,orderNum,price,evaluateNum
     // sortMethod====>asc为正序 desc为倒序
-    setup() {
+
+    setup(props, { emit }) {
         // 整合数据
         let sortParams = reactive({
             inventory: false,// 只显示有货
@@ -42,15 +43,21 @@ export default {
             sortMethod: null// 价格的升序与降序
         })
 
+
+        // 这里是点击筛选按钮每个按钮传递的参数不一致
         let changeStore = (val) => {
-            // 先判断是否是价格升序降序
+
+            //01: 先判断是否是价格升序降序
             if (val == 'price') {
+
                 sortParams.sortField = 'price'
                 // 这里是判断是否是第一次点击来的
                 if (sortParams.sortMethod == null) {
                     // 第一次默认修改为降序
                     sortParams.sortMethod = 'desc'
                 } else {
+                    // 这里是其他情况
+                    // 如果是desc那么就修改为asc 否则就修改为desc
                     sortParams.sortMethod = sortParams.sortMethod == 'desc' ? 'asc' : 'desc'
                 }
 
@@ -65,24 +72,21 @@ export default {
                 sortParams.sortMethod = null;
             }
 
-
-
-
-
-
-            // 02:点击将值修改为他 如果是当前的值那么就不执行
-
-
-
+            emit('sort-change', sortParams)
 
         }
 
+        // 这个是按钮被点击的时候会使用自定义事件将需要查询的参数传递给父级
+        emit('sort-change', sortParams)
 
 
+        // 这个是单选按钮的时候会触发自定义事件
+        let changeBox = () => {
+            emit('sort-change', sortParams)
+        }
 
 
-
-        return { sortParams, changeStore }
+        return { sortParams, changeStore, changeBox }
     }
 }
 </script>

@@ -3,7 +3,7 @@
         <img v-lazy="goods.picture" alt="">
         <p class="name ellipsis">{{ goods.name }}</p>
         <p class="desc ellipsis">{{ goods.desc || '暂无...' }}</p>
-        <p class="price">&yen;${{ goods.pirce }}</p>
+        <p class="price">&yen;{{ goods.price }}</p>
     </RouterLink>
 </template>
   
