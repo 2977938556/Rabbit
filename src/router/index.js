@@ -13,13 +13,18 @@ let TopCategory = () => import('@/view/category/index.vue')
 let SubCategory = () => import('@/view/category/sub.vue');
 
 
+// 商品详情模块
+let Goods = () => import('@/view/goods/index.vue');
+
+
 let routes = [
     {
-        path: '/', component: Layout,
+        path: '/', component: Layout,// 首页容器
         children: [
-            { path: '/', component: Home },
-            { path: '/category/:id', component: TopCategory },
-            { path: '/category/sub/:id', component: SubCategory }
+            { path: '/', component: Home },// 首页主页
+            { path: '/category/:id', component: TopCategory },// 商品第一级
+            { path: '/category/sub/:id', component: SubCategory }, // 商品分类第二级
+            { path: '/product/:id', component: Goods }//商品详情模块
         ]
     }
 ]

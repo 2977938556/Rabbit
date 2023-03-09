@@ -41,19 +41,14 @@ export default {
                 }
 
             })
-
             if (Object.getOwnPropertyNames(brand).length === 0) {
                 return {}
             }
 
             return brand;
         })
-
-
         return { SubBrand }
-
     }
-
 }
 </script>
 <style scoped lang="less"></style>
