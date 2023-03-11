@@ -4,7 +4,7 @@
             <!-- 面包屑 -->
             <XtxBread>
                 <XtxBreadItem to="/">首页</XtxBreadItem>
-                <!-- 这里由于数据乱了所以需要手动输入 -->
+                <!-- 这里由于后台数据乱了所以需要手动输入 -->
                 <XtxBreadItem :to="goods.categories[1].id">{{ goods.categories[1].name }}</XtxBreadItem>
                 <XtxBreadItem :to="goods.categories[0].id">{{ goods.categories[0].name }}</XtxBreadItem>
                 <Transition name="fade-right">
@@ -14,21 +14,21 @@
 
             </XtxBread>
 
-
-
-
-
-
-
             <!-- 商品信息 -->
             <div class="goods-info">
                 <div class="media">
+                    <!-- 图片放大镜 轮播图效果 -->
                     <GoodsImage :images="goods.mainPictures" />
+                    <!-- 商品销售组件 -->
+                    <GoodsSales />
                 </div>
-                <div class="spec">2</div>
+                <div class="spec">
+                    <!-- 商品规格组件 -->
+                    <GoodsName :goods="goods" />
+                    <!-- sku规格组件 -->
+                    <GoodsSku :goods="goods" skuid="1379052171743465474" />
+                </div>
             </div>
-
-
 
 
             <!-- 商品推荐 -->
@@ -67,17 +67,32 @@ import GoodsRelevant from './components/goods-relevant.vue'
 // 商品展示区域
 import GoodsImage from './components/goods-image.vue'
 
+// sku 组件
+import GoodsSku from './components/goods-sku.vue'
+
+// 商品销售组件信息
+import GoodsSales from './components/goods-sales.vue'
+
+// 商品详情该组件
+import GoodsName from './components/goods-names.vue'
+
 
 
 // 导入获取数据
 import { findGoods } from '@/api/product.js'
 import { useRoute } from 'vue-router'
-import { computed, nextTick, ref, watch } from 'vue'
+import { nextTick, ref, watch } from 'vue'
 
 
 export default {
     name: 'XtxGoodsPage',
-    components: { GoodsRelevant, GoodsImage },
+    components: {
+        GoodsRelevant,
+        GoodsImage,
+        GoodsSales,
+        GoodsName,
+        GoodsSku
+    },
 
     //定义获取商品详情API函数
     //在组件setup中获取商品详情数据
@@ -94,7 +109,7 @@ export default {
         let goods = ref(null);
 
 
-        //  这里是获取数据
+        //  这里是获取商品详情数据
         let getGoods = () => {
             let goodsId = route.params.id;
             findGoods(goodsId).then(({ result }) => {
@@ -107,18 +122,12 @@ export default {
             })
         }
 
-
-
-
-
-        // 这里是监听路由的变化
+        // 这里是监听路由的变化 发送id获取数据
         watch(() => route.params.id, (newValue) => {
             if (newValue && `/product/${newValue}` === route.path) {
                 getGoods();
             }
         }, { immediate: true })
-
-
 
 
 

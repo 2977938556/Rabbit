@@ -21,6 +21,10 @@
             </li>
         </ul>
 
+
+
+
+
     </div>
 </template>
 <script>
@@ -37,8 +41,6 @@ export default {
     setup(props) {
         const currIndex = ref(0)
 
-
-
         // 是否显示大图
         let flage = ref(false)
         let target = ref(null)
@@ -52,8 +54,6 @@ export default {
 
         // 3大图的距离
         let lazyerPosition = reactive({ backgroundPositionX: 0, backgroundPositionY: 0 })
-
-
 
 
         // 使用vueuse/code 获取坐标
@@ -71,6 +71,9 @@ export default {
                 x: 0, y: 0
             }
 
+
+
+            // 这里是判断是否超出距离限制
             if (elementX.value < 100) {
                 pasiton.x = 0;
             } else if (elementX.value > 300) {

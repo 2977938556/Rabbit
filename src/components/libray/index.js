@@ -17,6 +17,8 @@ import XtxBreadItem from './xtx-bread-item.vue'
 import XtxCheckBox from './xtx-checkbox.vue'
 // 无限加载组件
 import XtxinfiniteLoding from './xtx-infinite-loding.vue'
+// 地区组件
+import XtxCity from './xtx-city.vue'
 
 
 export default {
@@ -30,6 +32,8 @@ export default {
         app.component(XtxBreadItem.name, XtxBreadItem)
         app.component(XtxCheckBox.name, XtxCheckBox)
         app.component(XtxinfiniteLoding.name, XtxinfiniteLoding)
+        app.component(XtxCity.name, XtxCity)
+
         // 注册图片懒加载效果
         defineDirective(app)
     }
