@@ -7,6 +7,8 @@
 import XtxSkeleton from './xtx-skeleton.vue'
 // 轮播图
 import XtxCarousel from './xtx-carousel.vue'
+// 产品组件
+import GoodsItem from './xtx-goodsitem.vue'
 // 更多 按钮
 import XtxMore from './xtx-more.vue'
 // 面包屑
@@ -31,6 +33,7 @@ export default {
         app.component(XtxSkeleton.name, XtxSkeleton)
         app.component(XtxCarousel.name, XtxCarousel)
         app.component(XtxMore.name, XtxMore)
+        app.component(GoodsItem.name, GoodsItem)
         app.component(XtxBread.name, XtxBread)
         app.component(XtxBreadItem.name, XtxBreadItem)
         app.component(XtxCheckBox.name, XtxCheckBox)

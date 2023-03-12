@@ -33,8 +33,6 @@ import SubFilter from './components/sub-filter.vue'
 //排序组件 
 import SubSort from './components/sub-store.vue'
 
-// 商品组件
-import GoodsItem from './components/goods-item.vue'
 
 
 
@@ -44,7 +42,7 @@ import { useRoute } from 'vue-router'
 
 export default {
     name: 'SubCategory',
-    components: { SubBread, SubFilter, SubSort, GoodsItem },
+    components: { SubBread, SubFilter, SubSort },
     setup() {
         let route = useRoute();
 

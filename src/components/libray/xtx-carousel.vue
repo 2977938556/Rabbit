@@ -2,9 +2,28 @@
     <div class='xtx-carousel' @mouseenter="stop" @mouseleave="autoImg">
         <ul class="carousel-body">
             <li class="carousel-item" v-for="(item, index) in sliders" :key="item.id" :class="{ fade: i == index }">
-                <RouterLink :to=item.hrefUrl>
-                    <img :src="item.imgUrl" alt="">
-                </RouterLink>
+
+
+                <!-- 这里需要判断是图片还是数据 因为传递图片的数据是有图片数据 而猜你喜欢没有 -->
+                <template v-if="item.imgUrl">
+                    <RouterLink :to=item.hrefUrl>
+                        <img :src="item.imgUrl" alt="">
+                    </RouterLink>
+                </template>
+
+                <!-- 是猜你喜欢就到这里渲染 -->
+                <template v-else>
+                    <div class="slider">
+                        <RouterLink v-for="goods in item" :key="goods.id" :to="`/product/${goods.id}`">
+                            <img :src="goods.picture" alt="">
+                            <p class="name ellipsis">{{ goods.name }}</p>
+                            <p class="price">&yen;{{ goods.price }}</p>
+                        </RouterLink>
+                    </div>
+                </template>
+
+
+
             </li>
         </ul>
         <a href="javascript:;" class="carousel-btn prev" @click="onchanges(i = i - 1)"><i
@@ -12,7 +31,8 @@
         <a href="javascript:;" class="carousel-btn next" @click="onchanges(i = i + 1)"><i
                 class="iconfont icon-angle-right"></i></a>
         <div class="carousel-indicator">
-            <span v-for="(items, index) in 5" :key="items" @click="i = index" :class="{ active: index == i }"></span>
+            <span v-for="(items, index) in sliders.length" :key="items" @click="i = index"
+                :class="{ active: index == i }"></span>
         </div>
     </div>
 </template>
@@ -41,6 +61,7 @@ export default {
 
 
     setup(props) {
+
 
         // 自动播放
         // 有设置自动播放那么就
@@ -213,6 +234,38 @@ export default {
     &:hover {
         .carousel-btn {
             opacity: 1;
+        }
+    }
+}
+
+
+
+// 轮播商品
+.slider {
+    display: flex;
+    justify-content: space-around;
+    padding: 0 40px;
+
+    >a {
+        width: 240px;
+        text-align: center;
+
+        img {
+            padding: 20px;
+            width: 230px !important;
+            height: 230px !important;
+        }
+
+        .name {
+            font-size: 16px;
+            color: #666;
+            padding: 0 40px;
+        }
+
+        .price {
+            font-size: 16px;
+            color: @priceColor;
+            margin-top: 15px;
         }
     }
 }

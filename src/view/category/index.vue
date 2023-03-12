@@ -35,7 +35,7 @@
                     <XtxMore path="/category/sub" />
                 </div>
                 <div class="body">
-                    <GoodItem v-for="item in item.goods" :goods="item" :key="item.id" />
+                    <GoodsItem v-for="item in item.goods" :goods="item" :key="item.id" />
                 </div>
             </div>
 
@@ -52,10 +52,8 @@ import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 
 
-import GoodItem from './components/goods-item.vue'
 export default {
     name: 'TopCategory',
-    components: { GoodItem },
     setup() {
         let store = useStore();
         let route = useRoute();

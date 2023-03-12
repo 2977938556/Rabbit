@@ -14,7 +14,7 @@
 
             </XtxBread>
 
-            <!-- 商品信息 -->
+            <!--01: 商品信息 -->
             <div class="goods-info">
                 <div class="media">
                     <!-- 图片放大镜 轮播图效果 -->
@@ -33,28 +33,35 @@
                     <!-- 商品数量组件 -->
                     <XtxNumbox v-model="count" label="数量" :min="1" :max="goods.inventory" @change="change" />
 
+                    <!-- 按钮组件 -->
                     <XtxButton size="middle" type="primary" style="margin-top:10px;">加入购物车</XtxButton>
-
-
 
                 </div>
             </div>
 
 
-            <!-- 商品推荐 -->
-            <GoodsRelevant />
-
+            <!--02: 商品推荐 -->
+            <GoodsRelevant :goodsid="goods.id" />
 
             <!-- 商品详情 -->
             <div class="goods-footer">
                 <div class="goods-article">
-                    <!-- 商品+评价 -->
-                    <div class="goods-tabs"></div>
+                    <!-- 商品详情+评价 -->
+                    <div class="goods-tabs">
+                        <!--  -->
+                        <GoodsTbas />
+
+
+                    </div>
                     <!-- 注意事项 -->
-                    <div class="goods-warn"></div>
+                    <div class="goods-warn">2</div>
                 </div>
                 <!-- 24热榜+专题推荐 -->
-                <div class="goods-aside"></div>
+                <div class="goods-aside">
+                    <GoodsHot type="1" />
+                    <GoodsHot type="2" />
+                    <GoodsHot type="3" />
+                </div>
             </div>
 
 
@@ -64,8 +71,7 @@
 </template>
   
 <script>
-// 推荐商品组件
-import GoodsRelevant from './components/goods-relevant.vue'
+
 
 
 // 商品展示区域
@@ -80,12 +86,20 @@ import GoodsSales from './components/goods-sales.vue'
 // 商品详情该组件
 import GoodsName from './components/goods-names.vue'
 
+// 推荐商品组件
+import GoodsRelevant from './components/goods-relevant.vue'
+
+// 商品详情与评价组件
+import GoodsTbas from './components/goods-tabs.vue'
+
+// 热榜组件
+import GoodsHot from './components/goods-hot.vue'
 
 
 // 导入获取数据
 import { findGoods } from '@/api/product.js'
 import { useRoute } from 'vue-router'
-import { nextTick, ref, watch } from 'vue'
+import { nextTick, ref, watch, provide } from 'vue'
 
 
 export default {
@@ -95,7 +109,9 @@ export default {
         GoodsImage,
         GoodsSales,
         GoodsName,
-        GoodsSku
+        GoodsSku,
+        GoodsTbas,
+        GoodsHot
     },
 
     //定义获取商品详情API函数
@@ -113,6 +129,7 @@ export default {
         let getGoods = () => {
             let goodsId = route.params.id;
             findGoods(goodsId).then(({ result }) => {
+
                 goods.value = null
                 // 这里是在每次点击不同商品的时候重新在渲染组件后赋值  使用了v-if的组件先销毁再赋值然后再创建 
                 nextTick(() => {
@@ -120,7 +137,16 @@ export default {
                 })
                 console.log(result)
             })
+
+            // 给子集暴露 商品的数据
+            provide('goodsList', goods)
+
         }
+
+
+
+
+
 
         // 这里是监听路由的变化 发送id获取数据
         watch(() => route.params.id, (newValue) => {
