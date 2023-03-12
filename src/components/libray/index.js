@@ -19,7 +19,10 @@ import XtxCheckBox from './xtx-checkbox.vue'
 import XtxinfiniteLoding from './xtx-infinite-loding.vue'
 // 地区组件
 import XtxCity from './xtx-city.vue'
-
+// 数量增加减小
+import XtxNumbox from './xtx-numbox.vue'
+// 按钮
+import XtxButton from './xtx-button.vue'
 
 export default {
     install(app) {
@@ -33,6 +36,8 @@ export default {
         app.component(XtxCheckBox.name, XtxCheckBox)
         app.component(XtxinfiniteLoding.name, XtxinfiniteLoding)
         app.component(XtxCity.name, XtxCity)
+        app.component(XtxNumbox.name, XtxNumbox)
+        app.component(XtxButton.name, XtxButton)
 
         // 注册图片懒加载效果
         defineDirective(app)

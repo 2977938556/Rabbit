@@ -119,28 +119,23 @@ const updateDisabledStatus = (specs, pathMap) => {
 
 // 初始化选中状态
 let initSelectedStatus = (goods, skuid) => {
-
     // 找到了skuid中的数据
     let skusArr = goods.skus.find(item => item.id == skuid)
-
     if (skusArr) {
         // 遍历渲染的规格元素,每次遍历进行判断
         goods.specs.forEach((item, index) => {
-
             // 这里循环全部
             item.values.forEach((citem) => {
+                // 这里判断是否会等于
                 citem.selected = (citem.name == skusArr.specs[index].valueName)
             })
 
-
-
         })
     }
-
-
-
-
 }
+
+
+
 
 
 
@@ -159,10 +154,10 @@ export default {
             default: "",
         }
     },
-    setup(props) {
-        // 初始化 
-        initSelectedStatus(props.goods, props.skuid)
+    setup(props, { emit }) {
 
+        // 初始化选择状态
+        initSelectedStatus(props.goods, props.skuid)
 
         // 得到查询的字典
         let pathMap = getPathMap(props.goods.skus)
@@ -186,13 +181,49 @@ export default {
                 val.selected = true;
                 // 点击的时候更新禁用状态
                 updateDisabledStatus(props.goods.specs, pathMap)
+
+
+
+
+                // 这里需要做的一件事情就是将数据传递给父级
+                // 分别有这些数据
+                // skuId: skuid
+                // price: 价格
+                // oldPrice: 原价
+                // inventory: 拼接好的
+                let skuidMath = getSelectedArr(props.goods.specs).filter(item => item)
+                // 判断是否全部选中
+                if (skuidMath.length == props.goods.specs.length) {
+                    // 这里是得到已经选中的数据 ["黑色","中国","10cm"]  === "黑色⭐中国⭐10cm" 
+                    // 再使用这个再字典中查找到skuids 再去props.goods.skus中获取对象
+                    let skuids = pathMap[skuidMath.join(spliter)]
+
+                    let sku = props.goods.skus.find(item => item.id == skuids[0])
+                    // 传递参数
+                    emit("changeSku", {
+                        skuId: sku.id,
+                        price: sku.price,
+                        oldPrice: sku.oldPrice,
+                        // 这个参数需要 属性名称1:属性值  属性名2 :属性值
+                        inventory: sku.specs.reduce((a, b) => `${a} ${b.name}:${b.valueName}`, '').trim()
+                    })
+                } else {
+                    emit("changeSku", {})
+
+                }
+
+
+
+
+
+
+
+
+
+
+
+
             }
-
-
-
-
-
-
         }
 
 

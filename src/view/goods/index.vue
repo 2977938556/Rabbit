@@ -19,22 +19,30 @@
                 <div class="media">
                     <!-- 图片放大镜 轮播图效果 -->
                     <GoodsImage :images="goods.mainPictures" />
-                    <!-- 商品销售组件 -->
+                    <!-- 商品销售人气组件 -->
                     <GoodsSales />
                 </div>
                 <div class="spec">
-                    <!-- 商品规格组件 -->
+                    <!-- 商品信息组件 -->
                     <GoodsName :goods="goods" />
+
                     <!-- sku规格组件 -->
-                    <GoodsSku :goods="goods" skuid="1379052171743465474" />
+                    <GoodsSku :goods="goods" :skuid="goods.skus.find(item => item.inventory).id"
+                        @changeSku="changeSkuchange" />
+
+                    <!-- 商品数量组件 -->
+                    <XtxNumbox v-model="count" label="数量" :min="1" :max="goods.inventory" @change="change" />
+
+                    <XtxButton size="middle" type="primary" style="margin-top:10px;">加入购物车</XtxButton>
+
+
+
                 </div>
             </div>
 
 
             <!-- 商品推荐 -->
             <GoodsRelevant />
-
-
 
 
             <!-- 商品详情 -->
@@ -48,10 +56,6 @@
                 <!-- 24热榜+专题推荐 -->
                 <div class="goods-aside"></div>
             </div>
-
-
-            <!-- <p v-if="goods"> {{ categoriesList }}</p> -->
-
 
 
 
@@ -98,10 +102,6 @@ export default {
     //在组件setup中获取商品详情数据
     //定义一个useXxx函数处理数据
 
-
-
-
-
     setup() {
         let route = useRoute();
 
@@ -132,7 +132,36 @@ export default {
 
 
 
-        return { goods }
+        // 规格选项 选项选择了那么就需要修改父级的值然后子集也会更着变化
+        let changeSkuchange = (val) => {
+            if (val.skuId) {
+                goods.value.price = val.price;
+                goods.value.oldPrice = val.oldPrice;
+                goods.value.id = val.skuId;
+            }
+        }
+
+
+
+        // 数量
+        let count = ref(1)
+
+        // watch(() => count.value, (newvalue) => {
+        //     console.log("数据", newvalue)
+
+        // })
+
+
+        let change = (val) => {
+            count.value = val
+
+
+        }
+
+
+
+
+        return { goods, changeSkuchange, count, change }
     }
 
 
