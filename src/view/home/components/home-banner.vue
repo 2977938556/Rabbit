@@ -41,11 +41,11 @@ export default {
 
 // 设置组件样式穿透
 .xtx-carousel {
-    ::v-deep .carousel-btn.prev {
+    :deep(.carousel-btn).prev {
         left: 270px;
     }
 
-    ::v-deep .carousel-indicator {
+    :deep(.carousel-indicator) {
         padding-left: 250px;
     }
 }

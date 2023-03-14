@@ -31,6 +31,7 @@
 import { reactive, ref, watch } from 'vue'
 import { useMouseInElement } from '@vueuse/core'
 export default {
+    // 这个组件是图片放大镜效果组件 
     name: 'GoodsImage',
     props: {
         images: {

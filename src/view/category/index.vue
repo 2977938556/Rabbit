@@ -26,7 +26,6 @@
                 </ul>
             </div>
 
-
             <!-- 分类商品 -->
             <div class="ref-goods" v-for="item in TopList" :key="item.id">
                 <div class="head">

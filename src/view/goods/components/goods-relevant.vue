@@ -5,7 +5,7 @@
             <span class="title">同类商品推荐</span>
         </div>
         <!-- 此处使用改造后的xtx-carousel.vue -->
-        <XtxCarousel :sliders="releaveData" />
+        <XtxCarousel :sliders="releaveData" :autoPlay="false" />
 
 
     </div>
@@ -19,7 +19,7 @@ import { ref } from 'vue'
 
 
 export default {
-    // 同类推荐，猜你喜欢
+    // 同类推荐，猜你喜欢 组件
     name: 'GoodsRelevant',
     props: {
         goodsid: {
@@ -48,11 +48,7 @@ export default {
         })
 
 
-
-
         return { releaveData }
-
-
     }
 
 

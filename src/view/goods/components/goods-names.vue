@@ -32,6 +32,7 @@
 </template>
   
 <script>
+// 这个是组件详情页面提示信息
 import { ref } from 'vue'
 export default {
     name: 'GoodName',

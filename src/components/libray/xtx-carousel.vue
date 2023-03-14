@@ -121,8 +121,6 @@ export default {
             }
         }
 
-
-
         //05:设置鼠标点击上下切换开关
         // 条件 : 点击下一张不能超出了数据的长度 [5]
         // 条件2: 点击上一张不能小于第一张的长度  [0]
@@ -140,8 +138,6 @@ export default {
             }
 
         }
-
-
 
         return { i, stop, autoImg, onchanges }
     }

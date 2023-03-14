@@ -1,42 +1,39 @@
 <template>
     <div class="goods-tabs">
+        <!--  这个是切换组件的按钮 -->
         <nav>
             <a :class="{ active: tabChange === 'ProductDetails' }" href="javascript:;"
                 @click="tabChange = 'ProductDetails'">商品详情</a>
-            <a :class="{ active: tabChange === 'reviewsGoods' }" href="javascript:;"
-                @click="tabChange = 'reviewsGoods'">商品评价<span>(500+)</span></a>
+            <a :class="{ active: tabChange === 'GoodsComment' }" href="javascript:;"
+                @click="tabChange = 'GoodsComment'">商品评价<span>(500+)</span></a>
         </nav>
 
-
-
+        <!-- 商品 和 评论相互切换 -->
         <component :is="tabChange"></component>
-
-
-
-
     </div>
 </template>
 
 <script>
 import { ref } from 'vue'
 
-
+// 这个是详情组件
 import ProductDetails from './goods-ProductDetails.vue'
-import reviewsGoods from './goods-reviewsGoods.vue'
-
-
+// 这个是评论组件
+import GoodsComment from './goods-comment.vue'
 
 
 
 export default {
+    // 商品详情组件1评论和详情相互切换
     name: "GoodsTbas",
     components: {
         ProductDetails,
-        reviewsGoods
+        GoodsComment
     },
     setup() {
-        let tabChange = ref('ProductDetails')
 
+        // 这个是设置返回
+        let tabChange = ref('ProductDetails')
 
         return { tabChange }
 

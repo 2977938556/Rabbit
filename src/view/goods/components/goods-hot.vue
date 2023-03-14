@@ -8,6 +8,7 @@
 import { computed, ref, inject } from 'vue'
 import { findHotGoods } from '@/api/product.js'
 export default {
+    // 这个是热榜组件
     name: 'GoodsHot',
     props: {
         type: {
@@ -16,9 +17,8 @@ export default {
         }
     },
     setup(props) {
-
         // 得到父级传递的包装对象
-        let goods = inject('goodsList')
+        let goods = inject('goods')
 
         let typeTitle = { 1: '24小时热榜', 2: '每周周热榜', 3: '每月热榜' }
 
@@ -64,7 +64,7 @@ export default {
         font-weight: normal;
     }
 
-    ::v-deep .goods-item {
+    :deep(.goods-item) {
         background: #fff;
         width: 100%;
         margin-bottom: 10px;

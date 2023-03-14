@@ -48,23 +48,22 @@
                 <div class="goods-article">
                     <!-- 商品详情+评价 -->
                     <div class="goods-tabs">
-                        <!--  -->
+                        <!-- 切换栏 -->
                         <GoodsTbas />
-
+                        <!-- 注意事项组件 -->
 
                     </div>
                     <!-- 注意事项 -->
-                    <div class="goods-warn">2</div>
+                    <div class="goods-warn">
+                        <GoodsWran />
+                    </div>
                 </div>
                 <!-- 24热榜+专题推荐 -->
                 <div class="goods-aside">
                     <GoodsHot type="1" />
                     <GoodsHot type="2" />
-                    <GoodsHot type="3" />
                 </div>
             </div>
-
-
 
         </div>
     </div>
@@ -96,6 +95,10 @@ import GoodsTbas from './components/goods-tabs.vue'
 import GoodsHot from './components/goods-hot.vue'
 
 
+// 注意事项组件
+import GoodsWran from './components/goods-warn.vue'
+
+
 // 导入获取数据
 import { findGoods } from '@/api/product.js'
 import { useRoute } from 'vue-router'
@@ -111,7 +114,8 @@ export default {
         GoodsName,
         GoodsSku,
         GoodsTbas,
-        GoodsHot
+        GoodsHot,
+        GoodsWran
     },
 
     //定义获取商品详情API函数
@@ -139,7 +143,7 @@ export default {
             })
 
             // 给子集暴露 商品的数据
-            provide('goodsList', goods)
+            provide('goods', goods)
 
         }
 
