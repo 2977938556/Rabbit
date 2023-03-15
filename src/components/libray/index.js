@@ -25,6 +25,9 @@ import XtxCity from './xtx-city.vue'
 import XtxNumbox from './xtx-numbox.vue'
 // 按钮
 import XtxButton from './xtx-button.vue'
+// 分页器
+import XtxPagination from './xtx-pagination.vue'
+
 
 export default {
     install(app) {
@@ -41,7 +44,7 @@ export default {
         app.component(XtxCity.name, XtxCity)
         app.component(XtxNumbox.name, XtxNumbox)
         app.component(XtxButton.name, XtxButton)
-
+        app.component(XtxPagination.name, XtxPagination)
         // 注册图片懒加载效果
         defineDirective(app)
     }

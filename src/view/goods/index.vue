@@ -139,7 +139,7 @@ export default {
                 nextTick(() => {
                     goods.value = result
                 })
-                console.log(result)
+                // console.log(result)
             })
 
             // 给子集暴露 商品的数据

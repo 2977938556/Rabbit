@@ -27,6 +27,7 @@
 
         <!-- 评论数据 -->
         <div class="list" v-if="appraise">
+
             <!-- 列表 -->
             <div class="item" v-for="(item, index) in appraise.items" :key=index>
                 <div class="user">
@@ -55,7 +56,11 @@
                     </div>
                 </div>
             </div>
+
+
+            <XtxPagination :pageNo=pageNo :pageSize=pageSize :total=total :continues=5 />
         </div>
+
     </div>
 </template>
 <script>
@@ -77,6 +82,15 @@ export default {
         GoodsImages
     },
     setup() {
+
+
+        let pageNo = ref(1)
+        let pageSize = ref(3)
+        let total = ref(91)
+        let continues = ref(5)
+
+
+
         let goods = inject('goods')
 
         let goodsList = ref([])
@@ -134,7 +148,6 @@ export default {
         watch(reqParams, async (newVal) => {
             let { result } = await findCommentInfoByAppraise(goods.value.id, reqParams.value)
             appraise.value = result
-            console.log(appraise.value)
 
         }, { immediate: true })
 
@@ -154,7 +167,7 @@ export default {
 
 
 
-        return { goodsList, currentIndex, currgetTage, changeSort, reqParams, appraise, concealUser, specifications }
+        return { pageNo, pageSize, total, continues, goodsList, currentIndex, currgetTage, changeSort, reqParams, appraise, concealUser, specifications }
     }
 }
 </script>
