@@ -58,7 +58,8 @@
             </div>
 
 
-            <XtxPagination :pageNo=pageNo :pageSize=pageSize :total=total :continues=5 />
+            <XtxPagination :pageNo=reqParams.page :pageSize=reqParams.pageSize :total=total :continues=5
+                @changePageData="changePage" />
         </div>
 
     </div>
@@ -82,16 +83,15 @@ export default {
         GoodsImages
     },
     setup() {
-
-
+        // 这里是设置分页器的数据
         let pageNo = ref(1)
         let pageSize = ref(3)
-        let total = ref(91)
+        let total = ref(0)
         let continues = ref(5)
 
 
-
         let goods = inject('goods')
+        console.log(goods)
 
         let goodsList = ref([])
 
@@ -147,8 +147,12 @@ export default {
         let appraise = ref({})
         watch(reqParams, async (newVal) => {
             let { result } = await findCommentInfoByAppraise(goods.value.id, reqParams.value)
+            // 这里修改总数据
+            total.value = result.counts
+            // 这里修改每一页显示多少条数据
+            reqParams.pageSize = result.pageSize
+            // 这里设置评论渲染的数据
             appraise.value = result
-
         }, { immediate: true })
 
 
@@ -166,8 +170,15 @@ export default {
 
 
 
+        // 处理分页器的数据
+        let changePage = (val) => {
+            console.log("分页器数据", val)
+            reqParams.page = val
+        }
 
-        return { pageNo, pageSize, total, continues, goodsList, currentIndex, currgetTage, changeSort, reqParams, appraise, concealUser, specifications }
+
+
+        return { changePage, pageNo, pageSize, total, continues, goodsList, currentIndex, currgetTage, changeSort, reqParams, appraise, concealUser, specifications }
     }
 }
 </script>

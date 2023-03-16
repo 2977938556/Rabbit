@@ -1,15 +1,24 @@
 <template>
     <div class="xtx-pagination">
 
-        <a href="javascript:;" class="disabled">上一页</a>
+
+        <a href="javascript:;" :class="{ disabled: pageNo == 1 }" @click="changePage(pageNo - 1)">上一页</a>
+        <!-- 这里是起始值大于1就显示 -->
         <a href="javascript:;" v-if="pageData.start > 1">1</a>
+        <!-- 这里是起始值大于2就显示 -->
         <span v-if="pageData.start > 2">...</span>
+        <!-- 循环遍历数据 渲染 -->
         <template v-for="item in pageData.end" :key="item">
-            <a href="javascript:;" :class="{ active: Select == item }" v-if="item >= pageData.start">{{ item }}</a>
+            <!-- 这里需要进行判断因为是从开始进行循环的所以需要设置 判断条件从起始值开始就需要显示 -->
+            <a href="javascript:;" :class="{ active: pageNo == item }" v-if="item >= pageData.start"
+                @click="changePage(item)">{{ item }}</a>
         </template>
+        <!-- 这里的意思就是结尾的值如果小于了 总页数-1 (相当于小于了总页数的1页 如果总页数是30 那么就是 结尾的数值小于 29 都可以) -->
         <span v-if="pageData.end < pageData.pageCount - 1">...</span>
-        <a href="javascript:;" v-if="pageData.end < pageData.pageCount">{{ pageData.pageCount }}</a>
-        <a href="javascript:;">下一页</a>
+        <!-- 这里的意思就是结尾的数值小于了总页数那马就显示 -->
+        <a href="javascript:;" v-if="pageData.end < pageData.pageCount" @click="changePage(pageData.pageCount)">{{
+            pageData.pageCount }}</a>
+        <a href="javascript:;" :class="{ disabled: pageNo == pageData.pageCount }" @click="changePage(pageNo + 1)">下一页</a>
         <h1>{{ pageData }}</h1>
     </div>
 </template>
@@ -44,36 +53,10 @@ export default {
     // continues ：显示多少个按钮
     // 总页数   
 
-    setup(props) {
-
-
-        // 1 2 3 4 5
-        // 1 2 3 4 5
-        // 1 2 3 4 5
-        // 2 3 4 5 6
-
-
-        // 1
-        // 1 2 3 4 5
-        // 2
-        // 1 2 3 4 5
-        // 3
-        // 1 2 3 4 5
-        // 4
-        // 2 3 4 5 6
-
-
-
-
-
-
+    setup(props, { emit }) {
         let { pageNo, pageSize, total, continues } = toRefs(props)
 
-        let Select = ref(pageNo)
-
-
-
-        // 首先需要计算出总页数
+        // 计算出 开头 和结尾 还有 总页数
         let pageData = computed(() => {
 
             // 声明两个起始值和结束值
@@ -129,31 +112,22 @@ export default {
 
 
 
+        // 按钮点击事件 自定义事件发送此次点击的数据给调用者
+        let changePage = (val) => {
+            emit('changePageData', val)
+        }
 
-
-        return { pageData, Select }
-
-
-
-
+        return { pageData, changePage }
     }
-
-
-
-
-
-
-    // page = 3,4,5,6,7 
-    // page = 2,3,4,5,6 
-    // page = 1,2,3,4,5
-    // page = 2,3,4,5,6
-
-
 
 
 
 }
 </script>
+
+
+
+
 <style scoped lang="less">
 .xtx-pagination {
     display: flex;
@@ -180,6 +154,9 @@ export default {
         &.disabled {
             cursor: not-allowed;
             opacity: 0.4;
+            pointer-events: none;
+            opacity: 0.5;
+            /* 可选，使按钮半透明 */
 
             &:hover {
                 color: #333
