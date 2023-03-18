@@ -4,10 +4,10 @@
             <ul>
                 <template v-if="ShowNavBar">
                     <li><a href="javascript:;"><i class="iconfont icon-user"></i>{{ ShowNavBar.account }}</a></li>
-                    <li><a href="javascript:;">退出登录</a></li>
+                    <li><a href="javascript:;" @click="outLogin">退出登录</a></li>
                 </template>
                 <template v-else>
-                    <li><a href="javascript:;">请先登录</a></li>
+                    <li><router-link to="/login">请先登录</router-link></li>
                     <li><a href="javascript:;">免费注册</a></li>
                 </template>
 
@@ -25,11 +25,12 @@ import { computed } from 'vue';
 
 // 导入路由配置项
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 
 export default {
     setup() {
-        let store = useStore();
-
+        let store = useStore()
+        let route = useRouter()
 
 
         // 设置是否显示登录状态及注册
@@ -43,10 +44,16 @@ export default {
         })
 
 
+        let outLogin = () => {
+            store.commit('user/setUser', {})
+            route.push('/login')
+        }
 
 
 
-        return { ShowNavBar }
+
+
+        return { ShowNavBar, outLogin }
 
 
     },

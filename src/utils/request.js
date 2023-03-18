@@ -17,7 +17,6 @@ const instance = axios.create({
 instance.interceptors.request.use(function (config) {
     let { profile } = store.state.user;
 
-
     // 判断是否有token 
     if (profile.token) {
         config.headers.Authorization = `Bearer${profile.token}`

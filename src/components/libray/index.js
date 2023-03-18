@@ -27,7 +27,10 @@ import XtxNumbox from './xtx-numbox.vue'
 import XtxButton from './xtx-button.vue'
 // 分页器
 import XtxPagination from './xtx-pagination.vue'
-
+// 全局提示组件
+import XtxMessage from './xtx-message.vue'
+// 全局提示框
+import Message from './Message.js'
 
 export default {
     install(app) {
@@ -45,8 +48,11 @@ export default {
         app.component(XtxNumbox.name, XtxNumbox)
         app.component(XtxButton.name, XtxButton)
         app.component(XtxPagination.name, XtxPagination)
+        app.component(XtxMessage.name, XtxMessage)
         // 注册图片懒加载效果
         defineDirective(app)
+        // 注册全局提示框
+        app.config.globalProperties.$message = Message //原型函数
     }
 }
 

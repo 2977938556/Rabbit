@@ -17,6 +17,13 @@ let SubCategory = () => import('@/view/category/sub.vue');
 let Goods = () => import('@/view/goods/index.vue');
 
 
+
+// 登录模块
+let Login = () => import('@/view/login/index.vue')
+
+
+
+
 let routes = [
     {
         path: '/', component: Layout,// 首页容器
@@ -26,7 +33,8 @@ let routes = [
             { path: '/category/sub/:id', component: SubCategory }, // 商品分类第二级
             { path: '/product/:id', component: Goods }//商品详情模块
         ]
-    }
+    },
+    { path: '/login', component: Login }// 登录模块
 ]
 
 
