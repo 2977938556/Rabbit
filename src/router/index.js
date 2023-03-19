@@ -21,6 +21,8 @@ let Goods = () => import('@/view/goods/index.vue');
 // 登录模块
 let Login = () => import('@/view/login/index.vue')
 
+// qq登录的回调地址
+let Callback = () => import('@/view/login/callback.vue')
 
 
 
@@ -34,7 +36,8 @@ let routes = [
             { path: '/product/:id', component: Goods }//商品详情模块
         ]
     },
-    { path: '/login', component: Login }// 登录模块
+    { path: '/login', component: Login },
+    { path: "/login/callback", component: Callback }
 ]
 
 

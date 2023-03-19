@@ -37,6 +37,7 @@ import LoginFrom from './component/login-from.vue'
 import { ref } from 'vue'
 
 
+
 export default {
     name: 'PageLogin',
     components: { LoginHeader, LoginFooter, LoginFrom },
@@ -45,7 +46,14 @@ export default {
         // 切换效果 手机登录与短信登录
         let Selected = ref(true)
 
+        console.log(QC)
+
+
+
         return { Selected }
+
+
+
 
     }
 

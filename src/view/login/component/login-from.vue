@@ -78,7 +78,11 @@
 
         </Form>
         <div class="action">
-            <img src="https://qzonestyle.gtimg.cn/qzone/vas/opensns/res/img/Connect_logo_7.png" alt="">
+            <a
+                href="https://graph.qq.com/oauth2.0/authorize?client_id=100556005&response_type=token&scope=all&redirect_uri=http%3A%2F%2Fwww.corho.com%3A8080%2F%23%2Flogin%2Fcallback">
+                <img src="https://qzonestyle.gtimg.cn/qzone/vas/opensns/res/img/Connect_logo_7.png" alt="">
+            </a>
+            <!-- <span id="qqLoginBtn"></span> -->
             <div class="url">
                 <a href="javascript:;">忘记密码</a>
                 <a href="javascript:;">免费注册</a>
@@ -91,7 +95,7 @@
 
 
 <script>
-import { ref, reactive, watch, onBeforeUnmount } from 'vue'
+import { ref, reactive, watch, onBeforeUnmount, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -109,7 +113,6 @@ import Message from '@/components/libray/Message.js'
 
 
 
-
 export default {
     name: "LoginFrom",
     components: { Form, Field },
@@ -117,6 +120,20 @@ export default {
         let store = useStore()
         let router = useRouter()
         let route = useRoute()
+
+        // console.log("数据", window.qc.Login)
+
+
+        // 生成qq登陆链接
+        // onMounted(() => {
+        //     // window.qc.login({
+        //     //     btnId: 'qqLoginBtn'
+        //     // })
+        //     window.qc.Login({
+        //         btnId: 'qqLoginBtn'
+        //     })
+        // })
+
 
         // 控制显示隐藏
         let FromFlage = ref(true)
@@ -196,11 +213,11 @@ export default {
 
 
                 } catch (e) {
-                    console.log(e)
                     Message(({ type: 'error', text: e.response.data.message || "出错了" }))
                 }
             }
         }
+
 
 
 
@@ -216,6 +233,15 @@ export default {
                 // 这里做一个错误拦截
                 // 不成功的就会捕获并且将捕获的错误显示
                 try {
+                    // 在为0的情况下就说明 用户没有点击发送验证码
+                    if (time.value == 0) {
+                        time.value = 10;
+                        // 发送获取验证码请求
+                        let res = await userMobileLoginMsg(form.mobile)
+                        // 提示
+                        Message({ type: "success", text: "发送成功" })
+                    }
+
 
                     // 间歇定时器
                     timerID = setInterval(() => {
@@ -228,17 +254,6 @@ export default {
                     }, 1000)
 
 
-                    // 在为0的情况下就说明 用户没有点击发送验证码
-                    if (time.value == 0) {
-                        time.value = 10;
-                        // 发送获取验证码请求
-                        let res = await userMobileLoginMsg(form.mobile)
-                        // 提示
-                        Message({ type: "success", text: "发送成功" })
-                    }
-
-
-
                 } catch ({ response: { data } }) {
                     // 失败，使用vee的错误函数显示错误信息 setFieldError(字段,错误信息)
                     formCom.value.setFieldError('mobile', data.message)
@@ -248,11 +263,6 @@ export default {
                 // 这里是手机号码输入格式不对的情况下
                 formCom.value.setFieldError('mobile', vide)
             }
-
-
-
-
-
         }
 
         // 组件移前执行清除定时器
@@ -260,6 +270,8 @@ export default {
             console.log("清空定时器")
             clearInterval(timerID);
         })
+
+
 
 
 
@@ -403,3 +415,33 @@ export default {
     background: #ffaaaa;
 }
 </style>
+
+
+
+
+
+
+<!-- 
+
+# Copyright (c) 1993-2009 Microsoft Corp.
+#
+# This is a sample HOSTS file used by Microsoft TCP/IP for Windows.
+#
+# This file contains the mappings of IP addresses to host names. Each
+# entry should be kept on an individual line. The IP address should
+# be placed in the first column followed by the corresponding host name.
+# The IP address and the host name should be separated by at least one
+# space.
+#
+# Additionally, comments (such as these) may be inserted on individual
+# lines or following the machine name denoted by a '#' symbol.
+#
+# For example:
+#
+#      102.54.94.97     rhino.acme.com          # source server
+#       38.25.63.10     x.acme.com              # x client host
+
+# localhost name resolution is handled within DNS itself.
+#	127.0.0.1       localhost
+#	::1             localhost
+127.0.0.1       activate.navicat.com -->

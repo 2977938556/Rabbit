@@ -5,6 +5,10 @@ import path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  server: {
+    port: 8080,
+    host: true
+  },
   plugins: [vue()],
 
   resolve: {
@@ -26,9 +30,16 @@ export default defineConfig({
     },
   },
 
-
-
-
+  build: {
+    rollupOptions: {
+      external: ['qc'],
+      output: {
+        globals: {
+          qc: 'window.qc',
+        },
+      },
+    },
+  },
 
 
 
