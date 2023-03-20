@@ -17,8 +17,6 @@
                     <p>打开 <a href="javascript:;">小兔鲜App</a> 扫码登录</p>
                 </div>
 
-
-
             </div>
         </section>
         <LoginFooter></LoginFooter>
@@ -28,6 +26,10 @@
 // 导入头部组件
 import LoginHeader from './component/login-header.vue'
 import LoginFooter from './component/login-footer.vue'
+
+
+import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
 
 
 // 表单组件
@@ -46,8 +48,11 @@ export default {
         // 切换效果 手机登录与短信登录
         let Selected = ref(true)
 
-        console.log(QC)
 
+        // 存储回调地址，提供将来QQ回调页使用  setup中
+        const store = useStore()
+        const route = useRoute()
+        store.commit('user/setRedirectUrl', route.query.redirectUrl)
 
 
         return { Selected }

@@ -2,7 +2,9 @@
     <header class="login-header">
         <div class="container">
             <h1 class="logo">
-                <RouterLink to="/">小兔鲜</RouterLink>
+                <RouterLink to="/">
+                    <slot>小兔鲜儿</slot>
+                </RouterLink>
             </h1>
             <h3 class="sub">
                 <slot />
@@ -65,5 +67,5 @@ export default {
             letter-spacing: -5px;
         }
     }
-}</style>
-  
+}
+</style>
