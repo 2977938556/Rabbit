@@ -267,7 +267,6 @@ export default {
 
         // 组件移前执行清除定时器
         onBeforeUnmount(() => {
-            console.log("清空定时器")
             clearInterval(timerID);
         })
 

@@ -10,7 +10,7 @@ export default {
                 nickname: '',
                 account: '',
                 mobile: '',
-                token: '',
+                token: ''
             },
             // 这个是回跳的地址
             redirectUrl: "/"

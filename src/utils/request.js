@@ -19,7 +19,7 @@ instance.interceptors.request.use(function (config) {
 
     // 判断是否有token 
     if (profile.token) {
-        config.headers.Authorization = `Bearer${profile.token}`
+        config.headers.Authorization = `Bearer ${profile.token}`
     }
     return config;
 }, function (err) {

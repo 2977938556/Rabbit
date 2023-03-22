@@ -34,7 +34,7 @@
                     <XtxNumbox v-model="count" label="数量" :min="1" :max="goods.inventory" @change="change" />
 
                     <!-- 加入购物车按钮组件 -->
-                    <XtxButton size="middle" type="primary" style="margin-top:10px;">加入购物车</XtxButton>
+                    <XtxButton size="middle" type="primary" style="margin-top:10px;" @click="changes">加入购物车</XtxButton>
 
                 </div>
             </div>
@@ -102,7 +102,10 @@ import GoodsWran from './components/goods-warn.vue'
 // 导入获取数据
 import { findGoods } from '@/api/product.js'
 import { useRoute } from 'vue-router'
+import { useStore } from 'vuex'
 import { nextTick, ref, watch, provide } from 'vue'
+import Message from '@/components/libray/Message'
+
 
 
 export default {
@@ -123,7 +126,8 @@ export default {
     //定义一个useXxx函数处理数据
 
     setup() {
-        let route = useRoute();
+        let route = useRoute()
+        let store = useStore()
 
         // 产品详情数据
         let goods = ref(null);
@@ -139,7 +143,6 @@ export default {
                 nextTick(() => {
                     goods.value = result
                 })
-                // console.log(result)
             })
 
             // 给子集暴露 商品的数据
@@ -156,35 +159,86 @@ export default {
 
 
 
+
+        // 用户储存商品的数据
+        let countArr = ref(null)
+
         // 规格选项 选项选择了那么就需要修改父级的值然后子集也会更着变化
         let changeSkuchange = (val) => {
-            console.log("Sku组件传递过来的数据", val)
             if (val.skuId) {
-                goods.value.price = val.price;
-                goods.value.oldPrice = val.oldPrice;
-                goods.value.id = val.skuId;
+                goods.value.price = val.price;//  更新价格
+                goods.value.oldPrice = val.oldPrice; // 更新旧的价格
+                // goods.value.id = val.skuId;
+
+                countArr.value = val // 这里将数据保存起来
+            } else {
+                countArr.value = null // 没有数据就变为null
             }
         }
+
+
+
+
+        // 点击加入购物车获取数据
+        let changes = () => {
+            console.log("数据数据", countArr.value)
+            // 这里需要判断是否选中了
+            if (!countArr.value) {
+                Message({ type: "error", text: "请选商品的规格" })
+            } else {
+                // 这里需要判断当前是否有库存 【这里的库存是从sku组件传递回来的】
+                if (count.value >= countArr.value.inventory) {
+                    Message({ type: "error", text: "库存不足" })
+                }
+                // 解构出数据
+                let { skuId, valueName: attrsText, inventory: stock, price, oldPrice: nowPrice } = countArr.value
+                let { id, name, mainPictures: picture } = goods.value
+
+
+                // 否则就加入购物车
+                store.dispatch('cart/insertCart', {
+                    id,// id
+                    name,// 名称
+                    skuId,//sku ID
+                    attrsText,// 商品规格参数
+                    stock,// 库存
+                    count: count.value,// 数量
+                    picture: picture[0],// 产品第一张图片
+                    price,// 价格
+                    nowPrice,// 以前的价格
+                    selected: true, //是否选中
+                    isEffective: true, // 是否有效的
+                }).then(res => {
+                    Message({ type: "success", text: "添加到购物车成功" })
+                }).catch(e => {
+                    Message({ type: "error", text: "添加到购物车失败" })
+                })
+
+
+
+
+
+            }
+        }
+
+
+
+
+
 
 
         // 数量
         let count = ref(1)
 
-
+        // 点击增加或者减小数量
         let change = (val) => {
             count.value = val
         }
 
-        return { goods, changeSkuchange, count, change }
+        return { goods, changeSkuchange, count, change, changes }
     }
 
     // 下午完成 购物车部分
-
-
-
-
-
-
 
 
 }

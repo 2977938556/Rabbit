@@ -7,28 +7,34 @@
             <!-- 头部分类组件 -->
             <AppHeaderNav />
 
+            <!-- 搜索 -->
             <div class="search">
                 <i class="iconfont icon-search"></i>
                 <input type="text" placeholder="搜一搜">
             </div>
-            <div class="cart">
-                <a class="curr" href="#">
-                    <i class="iconfont icon-cart"></i><em>2</em>
-                </a>
-            </div>
+
+
+
+            <!--  购物车模块  -->
+            <AppHeaderCart />
+
+
         </div>
     </header>
 </template>
   
 <script>
 // 导入头部分类组件
-import AppHeaderNav from '@/components/app-header-nav.vue';
+import AppHeaderNav from '@/components/app-header-nav.vue'
+// 导入购物车组件
+import AppHeaderCart from '@/components/app-header-cart.vue'
 
 
 export default {
     name: 'AppHeader',
     components: {
         AppHeaderNav,
+        AppHeaderCart
     }
 }
 </script>
@@ -75,34 +81,6 @@ export default {
         }
     }
 
-    .cart {
-        width: 50px;
 
-        .curr {
-            height: 32px;
-            line-height: 32px;
-            text-align: center;
-            position: relative;
-            display: block;
-
-            .icon-cart {
-                font-size: 22px;
-            }
-
-            em {
-                font-style: normal;
-                position: absolute;
-                right: 0;
-                top: 0;
-                padding: 1px 6px;
-                line-height: 1;
-                background: @helpColor;
-                color: #fff;
-                font-size: 12px;
-                border-radius: 10px;
-                font-family: Arial;
-            }
-        }
-    }
 }
 </style>

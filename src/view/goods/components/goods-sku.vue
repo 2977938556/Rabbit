@@ -91,7 +91,6 @@ const getSelectedArr = (specs) => {
 }
 
 
-
 // 更新按钮的禁用状态
 const updateDisabledStatus = (specs, pathMap) => {
     // 第一个参数是 按钮的规格集合数量
@@ -127,9 +126,8 @@ let initSelectedStatus = (goods, skuid) => {
 
         })
     }
-    console.log(skusArr)
-}
 
+}
 export default {
     name: 'GoodsSku',
     props: {
@@ -169,7 +167,6 @@ export default {
                 // 点击的时候更新禁用状态
                 updateDisabledStatus(props.goods.specs, pathMap)
 
-
                 // 这里需要做的一件事情就是将数据传递给父级
                 // 分别有这些数据
                 // skuId: skuid
@@ -177,6 +174,7 @@ export default {
                 // oldPrice: 原价
                 // inventory: 拼接好的
                 let skuidMath = getSelectedArr(props.goods.specs).filter(item => item)
+
                 // 判断是否全部选中
                 if (skuidMath.length == props.goods.specs.length) {
                     // 这里是得到已经选中的数据 ["黑色","中国","10cm"]  === "黑色⭐中国⭐10cm" 
@@ -184,23 +182,49 @@ export default {
                     let skuids = pathMap[skuidMath.join(spliter)]
 
                     let sku = props.goods.skus.find(item => item.id == skuids[0])
+
+
                     // 传递参数
                     emit("changeSku", {
                         skuId: sku.id,//skuId
                         price: sku.price,// 价格
                         oldPrice: sku.oldPrice,// 历史价格
+                        inventory: sku.inventory,// 库存
                         // 这个参数需要 属性名称1:属性值  属性名2 :属性值
-                        inventory: sku.specs.reduce((a, b) => `${a} ${b.name}:${b.valueName}`, '').trim()// 拼接好的商品数据
+                        valueName: sku.specs.reduce((a, b) => `${a} ${b.name}:${b.valueName}`, '').trim()// 拼接好的商品数据
                     })
                 } else {
                     emit("changeSku", {})
                 }
 
-
-
             }
         }
 
+
+
+
+        // 这里是默认选中
+        let miaoya = getSelectedArr(props.goods.specs).filter(item => item)
+        // 判断是否全部选中
+        if (miaoya.length == props.goods.specs.length) {
+            // 这里是得到已经选中的数据 ["黑色","中国","10cm"]  === "黑色⭐中国⭐10cm" 
+            // 再使用这个再字典中查找到skuids 再去props.goods.skus中获取对象
+            let skuids = pathMap[miaoya.join(spliter)]
+
+            let sku = props.goods.skus.find(item => item.id == skuids[0])
+
+            // 传递参数
+            emit("changeSku", {
+                skuId: sku.id,//skuId
+                price: sku.price,// 价格
+                oldPrice: sku.oldPrice,// 历史价格
+                inventory: sku.inventory,// 库存
+                // 这个参数需要 属性名称1:属性值  属性名2 :属性值
+                valueName: sku.specs.reduce((a, b) => `${a} ${b.name}:${b.valueName}`, '').trim()// 拼接好的商品数据
+            })
+        } else {
+            emit("changeSku", {})
+        }
 
 
 
