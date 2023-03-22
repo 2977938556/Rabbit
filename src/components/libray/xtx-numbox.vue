@@ -39,7 +39,6 @@ export default {
 
             let count = newValue;
             emit('change', count)
-
         }
 
         return { numChange }

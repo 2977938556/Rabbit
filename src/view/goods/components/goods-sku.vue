@@ -28,12 +28,9 @@
 // 判断的依据是，拿着说有规格和现在已经选中的规则取搭配，得到可走路径。
 
 
-
-
-
 // 导入的是算法
 import getPowerSet from '@/vender/power-set'
-import { stringifyQuery } from 'vue-router'
+import { useStore } from 'vuex'
 // 拼接的字符串
 const spliter = '★'
 
@@ -115,8 +112,6 @@ const updateDisabledStatus = (specs, pathMap) => {
     })
 }
 
-
-
 // 初始化选中状态
 let initSelectedStatus = (goods, skuid) => {
     // 找到了skuid中的数据
@@ -132,15 +127,8 @@ let initSelectedStatus = (goods, skuid) => {
 
         })
     }
+    console.log(skusArr)
 }
-
-
-
-
-
-
-
-
 
 export default {
     name: 'GoodsSku',
@@ -155,7 +143,6 @@ export default {
         }
     },
     setup(props, { emit }) {
-
         // 初始化选择状态
         initSelectedStatus(props.goods, props.skuid)
 
@@ -183,8 +170,6 @@ export default {
                 updateDisabledStatus(props.goods.specs, pathMap)
 
 
-
-
                 // 这里需要做的一件事情就是将数据传递给父级
                 // 分别有这些数据
                 // skuId: skuid
@@ -201,25 +186,15 @@ export default {
                     let sku = props.goods.skus.find(item => item.id == skuids[0])
                     // 传递参数
                     emit("changeSku", {
-                        skuId: sku.id,
-                        price: sku.price,
-                        oldPrice: sku.oldPrice,
+                        skuId: sku.id,//skuId
+                        price: sku.price,// 价格
+                        oldPrice: sku.oldPrice,// 历史价格
                         // 这个参数需要 属性名称1:属性值  属性名2 :属性值
-                        inventory: sku.specs.reduce((a, b) => `${a} ${b.name}:${b.valueName}`, '').trim()
+                        inventory: sku.specs.reduce((a, b) => `${a} ${b.name}:${b.valueName}`, '').trim()// 拼接好的商品数据
                     })
                 } else {
                     emit("changeSku", {})
-
                 }
-
-
-
-
-
-
-
-
-
 
 
 

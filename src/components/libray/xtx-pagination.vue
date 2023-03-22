@@ -19,9 +19,9 @@
         <a href="javascript:;" v-if="pageData.end < pageData.pageCount" @click="changePage(pageData.pageCount)">{{
             pageData.pageCount }}</a>
         <a href="javascript:;" :class="{ disabled: pageNo == pageData.pageCount }" @click="changePage(pageNo + 1)">下一页</a>
-        <h1>{{ pageData }}</h1>
     </div>
 </template>
+
 <script>
 
 import { ref, computed, toRefs } from 'vue'

@@ -33,7 +33,7 @@
                     <!-- 商品数量组件 -->
                     <XtxNumbox v-model="count" label="数量" :min="1" :max="goods.inventory" @change="change" />
 
-                    <!-- 按钮组件 -->
+                    <!-- 加入购物车按钮组件 -->
                     <XtxButton size="middle" type="primary" style="margin-top:10px;">加入购物车</XtxButton>
 
                 </div>
@@ -132,8 +132,8 @@ export default {
         //  这里是获取商品详情数据
         let getGoods = () => {
             let goodsId = route.params.id;
-            findGoods(goodsId).then(({ result }) => {
 
+            findGoods(goodsId).then(({ result }) => {
                 goods.value = null
                 // 这里是在每次点击不同商品的时候重新在渲染组件后赋值  使用了v-if的组件先销毁再赋值然后再创建 
                 nextTick(() => {
@@ -144,12 +144,7 @@ export default {
 
             // 给子集暴露 商品的数据
             provide('goods', goods)
-
         }
-
-
-
-
 
 
         // 这里是监听路由的变化 发送id获取数据
@@ -161,9 +156,9 @@ export default {
 
 
 
-
         // 规格选项 选项选择了那么就需要修改父级的值然后子集也会更着变化
         let changeSkuchange = (val) => {
+            console.log("Sku组件传递过来的数据", val)
             if (val.skuId) {
                 goods.value.price = val.price;
                 goods.value.oldPrice = val.oldPrice;
@@ -172,27 +167,21 @@ export default {
         }
 
 
-
         // 数量
         let count = ref(1)
-
-        // watch(() => count.value, (newvalue) => {
-        //     console.log("数据", newvalue)
-
-        // })
 
 
         let change = (val) => {
             count.value = val
-
-
         }
-
-
-
 
         return { goods, changeSkuchange, count, change }
     }
+
+    // 下午完成 购物车部分
+
+
+
 
 
 

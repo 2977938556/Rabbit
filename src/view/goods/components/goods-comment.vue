@@ -91,7 +91,6 @@ export default {
 
 
         let goods = inject('goods')
-        console.log(goods)
 
         let goodsList = ref([])
 
@@ -172,11 +171,8 @@ export default {
 
         // 处理分页器的数据
         let changePage = (val) => {
-            console.log("分页器数据", val)
             reqParams.page = val
         }
-
-
 
         return { changePage, pageNo, pageSize, total, continues, goodsList, currentIndex, currgetTage, changeSort, reqParams, appraise, concealUser, specifications }
     }
