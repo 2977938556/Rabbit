@@ -1,12 +1,11 @@
 <template>
     <div class="cart">
-        <a class="curr" href="#">
+        <router-link class="curr" to="/cart">
             <i class="iconfont icon-cart"></i><em>{{ $store.getters['cart/validTotal'] }}</em>
-        </a>
+        </router-link>
 
-
-
-        <div class="layer">
+        <!-- 这里有一句话就是如果购物车没有数据那么就不显示这个模块 但是排除掉/cart 购物车模块 -->
+        <div class="layer" v-if="$store.getters['cart/validTotal'] && $route.path != '/cart'">
             <div class="list">
                 <!-- 这里是渲染购物车数据的 -->
                 <div class="item" v-for="item in $store.getters['cart/validList']" :key="item.id">
@@ -29,7 +28,7 @@
                     <p>共 {{ $store.getters['cart/validTotal'] }} 件商品</p>
                     <p>&yen;{{ $store.getters['cart/validAmount'] }}</p>
                 </div>
-                <XtxButton type="plain">去购物车结算</XtxButton>
+                <XtxButton type="plain" @click="$router.push({ name: 'cart' })">去购物车结算</XtxButton>
             </div>
         </div>
     </div>
@@ -39,6 +38,7 @@
 
 <script>
 import { useStore } from 'vuex'
+import Message from './libray/Message'
 
 
 
@@ -50,8 +50,13 @@ export default {
 
 
 
+        // 这里是起始加载页面就更新购物车数据
+        store.dispatch('cart/updateCart').then(res => {
+            Message({ type: 'success', text: '成功更新购物车' })
+        })
+
+
         let DeleteItem = (item) => {
-            console.log(item)
             store.dispatch('cart/deleteCart', item).then(res => {
                 console.log("成功删除")
             }).catch(e => {

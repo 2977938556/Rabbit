@@ -7,10 +7,14 @@ let Layout = () => import('@/view/Layout.vue');
 // 首页
 let Home = () => import('@/view/home/index.vue');
 
-// 一级分类
+
+
+// 一级分类 
 let TopCategory = () => import('@/view/category/index.vue')
-// 二级分类
+// 二级 产品展示菜单
 let SubCategory = () => import('@/view/category/sub.vue');
+
+
 
 
 // 商品详情模块
@@ -26,6 +30,13 @@ let Callback = () => import('@/view/login/callback.vue')
 
 
 
+
+// 购物车模块
+let Cart = () => import('@/view/cart/index.vue')
+
+
+
+
 let routes = [
     {
         path: '/', component: Layout,// 首页容器
@@ -33,11 +44,13 @@ let routes = [
             { path: '/', component: Home },// 首页主页
             { path: '/category/:id', component: TopCategory },// 商品第一级
             { path: '/category/sub/:id', component: SubCategory }, // 商品分类第二级
-            { path: '/product/:id', component: Goods }//商品详情模块
+            { path: '/product/:id', component: Goods },//商品详情模块
+            { path: '/cart', name: 'cart', component: Cart },// 购物车模块
+
         ]
     },
-    { path: '/login', component: Login },
-    { path: "/login/callback", component: Callback }
+    { path: '/login', component: Login },// 登录模块
+    { path: "/login/callback", component: Callback },// QQ回调地址模块
 ]
 
 

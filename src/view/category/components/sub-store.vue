@@ -17,8 +17,8 @@
             </a>
         </div>
         <div class="check">
-            <XtxCheckBox @change="changeBox" v-model="sortParams.inventory">仅显示有货商品</XtxCheckBox>
-            <XtxCheckBox @change="changeBox" v-model="sortParams.onlyDiscount">仅显示特惠商品</XtxCheckBox>
+            <XtxCheckBox @update:modelValue="changeBox" v-model="sortParams.inventory">仅显示有货商品</XtxCheckBox>
+            <XtxCheckBox @update:modelValue="changeBox" v-model="sortParams.onlyDiscount">仅显示特惠商品</XtxCheckBox>
         </div>
 
 
