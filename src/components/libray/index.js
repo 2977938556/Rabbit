@@ -32,6 +32,9 @@ import XtxMessage from './xtx-message.vue'
 // 全局提示框
 import Message from './Message.js'
 
+// 全局提示框
+import Confirm from './XtxConfirm.js'
+
 export default {
     install(app) {
         // 在app上进行扩展，app提供 component directive 函数
@@ -53,6 +56,8 @@ export default {
         defineDirective(app)
         // 注册全局提示框
         app.config.globalProperties.$message = Message //原型函数
+        app.config.globalProperties.$confirm = Confirm //原型函数
+
     }
 }
 

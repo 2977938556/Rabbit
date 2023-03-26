@@ -5,6 +5,7 @@
         <span v-if="$slots.default">
             <slot />
         </span>
+        <span v-else>选择</span>
     </div>
 </template>
 <script>

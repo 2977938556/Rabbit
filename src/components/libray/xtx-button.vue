@@ -4,8 +4,10 @@
     </button>
 </template>
 <script>
+
 export default {
     name: 'XtxButton',
+
     props: {
         size: {
             type: String,

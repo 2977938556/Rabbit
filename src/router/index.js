@@ -61,9 +61,9 @@ let router = createRouter({
         // 如果有 savedPosition，则直接返回保存的位置
         if (savedPosition) {
             return savedPosition;
+        } else {
+            return { y: 0 };
         }
-        // 否则返回顶部
-        return { top: 0 };
     }
 })
 

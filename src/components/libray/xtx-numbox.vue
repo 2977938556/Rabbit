@@ -2,14 +2,14 @@
     <div class="xtx-numbox">
         <div class="label">{{ label }}</div>
         <div class="numbox">
-            <a href="javascript:;" @click="numChange(-1)">-</a>
-            <input type="text" readonly :value="modelValue">
-            <a href="javascript:;" @click="numChange(1)">+</a>
+            <a href="javascript:;" @click="changeNum(-1)">-</a>
+            <input type="text" readonly :value="num">
+            <a href="javascript:;" @click="changeNum(1)">+</a>
         </div>
     </div>
 </template>
 <script>
-import { registerRuntimeCompiler } from 'vue'
+import { useVModel } from '@vueuse/core'
 export default {
     name: 'XtxNumbox',
     props: {
@@ -31,17 +31,15 @@ export default {
     },
 
     setup(props, { emit }) {
-        let numChange = (val) => {
-            // 这里得到计算后的值
-            let newValue = props.modelValue + val
-            // 这里符合条件的就禁止修改数据了
-            if (newValue < props.min || newValue > props.max) return
-
-            let count = newValue;
-            emit('change', count)
+        const num = useVModel(props, 'modelValue', emit)
+        const changeNum = (value) => {
+            const newValue = num.value + value
+            if (newValue < props.min) return
+            if (newValue > props.max) return
+            num.value = newValue
+            // emit('update:modelValue', newValue)
         }
-
-        return { numChange }
+        return { num, changeNum }
     }
 
 }

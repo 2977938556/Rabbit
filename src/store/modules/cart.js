@@ -48,7 +48,7 @@ export default {
                 // 遍历goods的数据看看传递的数据是否为空的
                 for (let key in goods) {
                     // 这里是判断传递的数据是否有为空的不合法
-                    if (goods[key] != '' && goods[key] != undefined && goods[key] != null) {
+                    if (goods[key] != undefined && goods[key] != null && goods[key] !== '') {
                         // 修改数据
                         goodsIndex[key] = goods[key]
                     }
@@ -60,37 +60,39 @@ export default {
     },
     actions: {
         //01: 用户储存加入购物车商品
-        insertCart(cxt, playload) {
+        insertCart(ctx, playload) {
             // 判读用户是否已经登录
-            if (cxt.rootState.user.profile.token) {
+            if (ctx.rootState.user.profile.token) {
                 // 已经登录
 
             } else {
                 // 没有登录
                 // 调用方法传递数据
-                cxt.commit("insertCart", playload)
+                ctx.commit("insertCart", playload)
                 // 返回成功状态
                 return Promise.resolve()
             }
 
         },
         //02: 删除产品
-        deleteCart(cxt, playload) {
-            if (cxt.rootState.user.profile.token) {
-                // 已经登录
-            } else {
-                // 没有登录
-                cxt.commit("deleteCart", playload)
-                // 返回成功状态
-                return Promise.resolve()
-            }
+        deleteCart(ctx, playload) {
+            return new Promise((resolve, reject) => {
+                if (ctx.rootState.user.profile.token) {
+                    // 已经登录
+                } else {
+                    // 没有登录
+                    ctx.commit("deleteCart", playload)
+                    // 返回成功状态
+                    resolve()
+                }
+            })
+
 
         },
-        //03：修改购物车商品
+        //03：系统初始化修改购物车商品
         updateCart(ctx) {
-
             // 判断是否登录了
-            if (ctx.rootState.user.token) {
+            if (ctx.rootState.user.profile.token) {
                 //  登录了
             } else {
                 // 没有登录
@@ -99,9 +101,6 @@ export default {
                     let promiseAllList = ctx.state.list.map(item => {
                         return getNewCartGoods(item.skuId)
                     })
-
-                    // console.log(promiseAllList)
-
                     // promiseAllList 返回值为一个待定的promis数组
                     Promise.all(promiseAllList).then((dataList) => {
                         // 遍历数据调用mutations的方法
@@ -114,21 +113,45 @@ export default {
                         // 返回成功的状态 
                         return resolve()
                     })
-
-
-
-
-
-
                 })
-
-
-
             }
+        },
+        //04: 全选
+        checkAllCart(ctx, selected) {
+            return new Promise((resolve, reject) => {
+                if (ctx.rootState.user.profile.token) {
 
+                } else {
+                    ctx.getters.validList.forEach(item => {
+                        ctx.commit('updateCart', { skuId: item.skuId, selected: selected })
+                    })
+                    resolve()
+                }
+            })
+        },
+        //05: 批量删除
+        batchDeleteCart(ctx, iscode) {
+            if (ctx.rootState.user.profile.token) {
+                //已登录
+            } else {
+                //未登录
+                // 这里判断是否删除还是清空失效列表
+                ctx.getters[iscode == true ? 'invalidList' : 'selectedList'].forEach(item => {
+                    ctx.commit('deleteCart', item)
+                })
+            }
+        },
+        //06：修改购物车的数量
+        updateCartCount(ctx, { goods, count }) {
+            return new Promise((resolve, reject) => {
+                if (ctx.rootState.user.profile.token) {
 
-
-
+                } else {
+                    // 修改数据
+                    ctx.commit('updateCart', { skuId: goods.skuId, count: count })
+                    resolve()
+                }
+            })
         }
 
     },
@@ -141,18 +164,31 @@ export default {
         validTotal(state, getters) {
             return getters.validList.length
         },
-        // 商品的总价
-        validAmount(state, getters) {
-            return getters.validList.reduce((p, c) => p + c.price * 100 * c.count, 0) / 100
-        },
-        //  无效商品列表
+        // 无效商品列表
         invalidList(state) {
             return state.list.filter(item => item.stock < 0 && item.isEffective == false)
         },
-        // 选中多少件商品
+        // 选中的商品
         selectedList(state, getters) {
-            return getters.validList.filter(item => item.selected == true) || []
-        }
+            return getters.validList.filter(item => item.selected) || []
+        },
+        // // 选中的商品列表的数量
+        selectedTotal(state, getters) {
+            return getters.selectedList.reduce((p, c) => p + c.count, 0)
+        },
+        // // 商品的总价
+        validAmount(state, getters) {
+            return getters.selectedList.reduce((p, c) => p + c.price * 100 * c.count, 0) / 100
+        },
+        // // 是否全选
+        isCheckAll(state, getters) {
+            // 这里是判断是否还有数据
+            if (getters.validList.length === 0) {
+                return false
+            }
+            return getters.validList.every(item => item.selected == true)
+        },
+
 
     }
 }
