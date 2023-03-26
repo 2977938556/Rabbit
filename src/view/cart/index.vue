@@ -187,10 +187,13 @@ export default {
         // 删除选中的产品
         let batchDeleteCart = (iscode) => {
             Confirm({ title: "删除产品", text: `亲，是否要${iscode == true ? '清空失效的' : "删除"}全部选中的产品` }).then(() => {
-                store.dispatch('cart/batchDeleteCart', iscode).then(() => {
+                return store.dispatch('cart/batchDeleteCart', iscode).then(() => {
                     Message({ title: "提示", text: `${iscode == true ? '清空成功' : '删除成功'}`, type: "success" })
                 })
-            }).catch(() => { })
+            }).catch(error => {
+                console.log(error)
+                Message({ title: "提示", text: `${error}`, type: 'error' })
+            })
 
         }
 

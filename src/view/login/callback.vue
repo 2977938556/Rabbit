@@ -105,10 +105,13 @@ export default {
                     let { result } = await userQQLogin(id)
                     //05： 数据本地化存储
                     store.commit('user/setUser', { id: result.id, avatar: result.avatar, nickname: result.nickname, account: result.account, mobile: result.mobile, token: result.token })
-                    //06：显示提示
-                    Message(({ type: 'success', text: '登录成功' }))
-                    //07：跳转路由 如果是从其他页面跳进来的那么登录成功后就会跳转到回去
-                    router.push(route.query.redirectUrl || '/')
+                    // 登录成功的话清空本地的购物车 已经合并到云端了
+                    store.dispatch('cart/mergeLocalCart').then(() => {
+                        // //03：显示提示
+                        Message(({ type: 'success', text: '登录成功' }))
+                        // //04：跳转路由 如果是从其他页面跳进来的那么登录成功后就会跳转到回去
+                        router.push(route.query.redirectUrl || '/')
+                    })
                 } catch (e) {
                     // 这里是qq登录失败
                     // 这里是后台会返回一个错误的状态就会进入到这里面 然后显示需要绑定手机号

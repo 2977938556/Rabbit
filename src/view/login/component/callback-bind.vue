@@ -144,10 +144,17 @@ export default {
                 userQQBindLogin({ unionId: props.openId, mobile: form.mobile, code: form.code }).then(({ result }) => {
                     //02： 数据本地化存储
                     store.commit('user/setUser', { id: result.id, avatar: result.avatar, nickname: result.nickname, account: result.account, mobile: result.mobile, token: result.token })
-                    // //03：显示提示
-                    Message(({ type: 'success', text: '绑定成功' }))
-                    // //04：跳转路由 如果是从其他页面跳进来的那么登录成功后就会跳转到回去
-                    router.push(route.query.redirectUrl || '/')
+
+
+                    // 清空本地的购物车 已经合并到云端了
+                    store.dispatch('cart/mergeLocalCart').then(() => {
+                        // //03：显示提示
+                        Message(({ type: 'success', text: '绑定成功' }))
+                        // //04：跳转路由 如果是从其他页面跳进来的那么登录成功后就会跳转到回去
+                        router.push(route.query.redirectUrl || '/')
+                    })
+
+
                 }).catch(({ response }) => {
                     // 这里是提示错误的数据
                     Message({ type: "error", text: response.data.message })

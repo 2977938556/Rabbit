@@ -49,8 +49,13 @@ export default {
         // 退出登录需要清空掉vuex中的数据 由于绑定了持久化插件 清空vuex中的数据也会将本地存储的数据清空
         // 跳转到登录页面
         let outLogin = () => {
+            // 清空用户的token信息
             store.commit('user/setUser', {})
+            // 清空购物车数据
+            store.dispatch('cart/setCartList', [])
+            // 跳转到登录页面
             route.push('/login')
+
         }
 
 
