@@ -152,6 +152,28 @@ export default {
                     resolve()
                 }
             })
+        },
+
+        //07： 修改规格参数
+        updateCartSku(ctx, { oldSkuId, newSku }) {
+            return new Promise((resolve, reject) => {
+                if (ctx.rootState.user.profile.token) {
+
+                } else {
+                    // 修改数据
+                    // 01:获取旧的商品数据
+                    let oldSkuIdList = ctx.state.list.find(item => item.skuId == oldSkuId.skuId)
+                    // 02:删除获取的商品数据
+                    ctx.commit('deleteCart', oldSkuId)
+                    // 03：合并新的商品数据
+                    let { skuId, inventory: stock, oldPrice: nowPrice, price, valueName: attrsText } = newSku
+                    // 插入
+                    let newCartSku = { ...oldSkuId, skuId, stock, nowPrice, price, attrsText }
+                    ctx.commit('insertCart', newCartSku)
+
+                    resolve()
+                }
+            })
         }
 
     },
@@ -178,7 +200,7 @@ export default {
         },
         // // 商品的总价
         validAmount(state, getters) {
-            return getters.selectedList.reduce((p, c) => p + c.price * 100 * c.count, 0) / 100
+            return parseFloat(getters.selectedList.reduce((p, c) => p + c.price * 100 * c.count, 0) / 100).toFixed(1) + 0;
         },
         // // 是否全选
         isCheckAll(state, getters) {

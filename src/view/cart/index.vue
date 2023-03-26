@@ -36,7 +36,10 @@
                                         <RouterLink to="/"><img :src="item.picture" alt=""></RouterLink>
                                         <div>
                                             <p class="name ellipsis">{{ item.name }}</p>
-                                            <p class="attr">{{ item.attrsText }}</p>
+                                            <!-- <p class="attr">{{ item.attrsText }}</p> -->
+                                            <!-- 使用选择规格sku组件 -->
+                                            <CartSku @change="$event => changeSku(item, $event)" :skuId="item.skuId"
+                                                :attrsText="item.attrsText" />
                                         </div>
                                     </div>
                                 </td>
@@ -123,17 +126,21 @@ import { computed } from 'vue'
 // 猜你喜欢组件
 import GoodRelevant from '@/view/goods/components/goods-relevant.vue'
 
-import XtxNumbox from '@/components/libray/xtx-numbox.vue'
 // 没有数据就进来这里
 import CartNone from './component/cat-none.vue'
+
 // 提示组件
 import Message from '@/components/libray/Message'
+
 // 确认组件
 import Confirm from '@/components/libray/XtxConfirm.js'
 
+// sku选择组件
+import CartSku from './component/cart-sku.vue'
+
 export default {
     name: 'Cart',
-    components: { GoodRelevant, CartNone, XtxNumbox },
+    components: { GoodRelevant, CartNone, CartSku },
 
     setup() {
         let store = useStore()
@@ -187,15 +194,20 @@ export default {
 
         }
 
-        // 数量
+        // 修改数量
         let changeCount = (goods, count) => {
             store.dispatch('cart/updateCartCount', { goods, count })
         }
 
 
+        // 修改规格
+        let changeSku = (oldSkuId, newSku) => {
+            //调用修改规格actions
+            store.dispatch('cart/updateCartSku', { oldSkuId, newSku })
+        }
 
 
-        return { validList, invalidList, selectedList, isCheckAll, validAmount, checkAllCart, deleteCart, batchDeleteCart, changeCount }
+        return { validList, invalidList, selectedList, isCheckAll, validAmount, checkAllCart, deleteCart, batchDeleteCart, changeCount, changeSku }
     },
 }
 </script>

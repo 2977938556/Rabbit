@@ -30,12 +30,8 @@
 
 // 导入的是算法
 import getPowerSet from '@/vender/power-set'
-import { useStore } from 'vuex'
 // 拼接的字符串
 const spliter = '★'
-
-
-
 
 // 生成字典
 let getPathMap = (sku) => {
@@ -73,8 +69,6 @@ let getPathMap = (sku) => {
 
 }
 
-
-
 //得到当前选中规格集合
 // 得到当前选中规格集合
 const getSelectedArr = (specs) => {
@@ -89,7 +83,6 @@ const getSelectedArr = (specs) => {
     })
     return selectedArr
 }
-
 
 // 更新按钮的禁用状态
 const updateDisabledStatus = (specs, pathMap) => {
@@ -128,6 +121,7 @@ let initSelectedStatus = (goods, skuid) => {
     }
 
 }
+
 export default {
     name: 'GoodsSku',
     props: {
@@ -199,35 +193,6 @@ export default {
 
             }
         }
-
-
-
-
-        // 这里是默认选中
-        let miaoya = getSelectedArr(props.goods.specs).filter(item => item)
-        // 判断是否全部选中
-        if (miaoya.length == props.goods.specs.length) {
-            // 这里是得到已经选中的数据 ["黑色","中国","10cm"]  === "黑色⭐中国⭐10cm" 
-            // 再使用这个再字典中查找到skuids 再去props.goods.skus中获取对象
-            let skuids = pathMap[miaoya.join(spliter)]
-
-            let sku = props.goods.skus.find(item => item.id == skuids[0])
-
-            // 传递参数
-            emit("changeSku", {
-                skuId: sku.id,//skuId
-                price: sku.price,// 价格
-                oldPrice: sku.oldPrice,// 历史价格
-                inventory: sku.inventory,// 库存
-                // 这个参数需要 属性名称1:属性值  属性名2 :属性值
-                valueName: sku.specs.reduce((a, b) => `${a} ${b.name}:${b.valueName}`, '').trim()// 拼接好的商品数据
-            })
-        } else {
-            emit("changeSku", {})
-        }
-
-
-
 
         return { clickSpecs }
 
