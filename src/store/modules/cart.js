@@ -213,7 +213,23 @@ export default {
         updateCartSku(ctx, { oldSkuId, newSku }) {
             return new Promise((resolve, reject) => {
                 if (ctx.rootState.user.profile.token) {
-                    // 登录了修改规格参数
+                    // 登录 TODO
+                    // 1. 获取原先商品的数量
+                    // 2. 删除原先商品
+                    // 3. 获取修改的skuId 和 原先商品数量 做一个加入购物车操作
+                    // 4. 更新列表
+                    let oldGoods = ctx.state.list.find(item => item.skuId == oldSkuId.skuId)
+                    deleteCart([oldGoods.skuId]).then(() => {
+                        // 删除成功
+                        return insertCart({ skuId: newSku.skuId, count: oldSkuId.count })
+                    }).then(() => {
+                        return findCartList()
+                    }).then(({ result }) => {
+                        ctx.commit('setCartList', result)
+                        resolve()
+                    })
+
+
 
 
                 } else {
@@ -294,3 +310,4 @@ export default {
 }
 
 // 还剩下二个模块 加油
+
