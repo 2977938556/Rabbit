@@ -111,7 +111,7 @@
                 <div class="total">
                     共 {{ validList.length }}件商品，已选择 {{ selectedList }} 件，商品合计：
                     <span class="red">￥{{ validAmount }}</span>
-                    <XtxButton type="primary">下单结算</XtxButton>
+                    <XtxButton @click="addToCart" type="primary">下单结算</XtxButton>
                 </div>
             </div>
             <!-- 猜你喜欢 -->
@@ -137,6 +137,7 @@ import Confirm from '@/components/libray/XtxConfirm.js'
 
 // sku选择组件
 import CartSku from './component/cart-sku.vue'
+import { useRouter } from 'vue-router'
 
 export default {
     name: 'Cart',
@@ -144,6 +145,7 @@ export default {
 
     setup() {
         let store = useStore()
+        let router = useRouter()
 
         // 返回有效商品
         let validList = computed(() => {
@@ -165,7 +167,6 @@ export default {
         let validAmount = computed(() => {
             return store.getters['cart/validAmount']
         })
-
 
 
         // 全选功能
@@ -202,7 +203,6 @@ export default {
             store.dispatch('cart/updateCartCount', { goods, count })
         }
 
-
         // 修改规格
         let changeSku = (oldSkuId, newSku) => {
             //调用修改规格actions
@@ -210,7 +210,30 @@ export default {
         }
 
 
-        return { validList, invalidList, selectedList, isCheckAll, validAmount, checkAllCart, deleteCart, batchDeleteCart, changeCount, changeSku }
+        // 加入购物车 
+        // 前置条件  需要选择有效的商品  需要登录  
+        let addToCart = () => {
+            // 判断是否选择有效的商品
+            if (selectedList.value == 0) {
+                return Message({ type: 'error', text: "没有选择有效商品", titl: "下单提示" })
+            }
+
+
+            // 判断是否登录
+            if (!store.state.user.profile.token) {
+                Confirm({ title: "下单", text: `亲你没有登录是否要跳转到登陆页面` }).then(() => {
+                    router.push('/member/checkout')
+                }).catch(error => {
+
+                })
+            }
+            // 这里如果是成功登录的话不需要设置跳转地址因为路由拦截器会作用
+
+
+
+        }
+
+        return { validList, invalidList, selectedList, isCheckAll, validAmount, checkAllCart, deleteCart, batchDeleteCart, changeCount, changeSku, addToCart }
     },
 }
 </script>

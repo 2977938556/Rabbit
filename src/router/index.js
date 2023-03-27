@@ -1,6 +1,9 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 
+// 导入数据仓库
+import store from '@/store/index.js'
+
 
 // 布局组件
 let Layout = () => import('@/view/Layout.vue');
@@ -66,6 +69,24 @@ let router = createRouter({
         }
     }
 })
+
+
+
+router.beforeEach((to, from, next) => {
+
+    // 获取是否登录
+    let { profile } = store.state.user
+
+    // 这里判断的是 你跳转到member 页面但是没有登录的情况
+    if (to.path.startsWith('/member') && !profile.token) {
+        next({ path: '/login', query: { redirectUrl: to.fullPath } })
+    }
+    next()
+
+})
+
+
+
 
 
 export default router;

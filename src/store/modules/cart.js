@@ -194,7 +194,6 @@ export default {
                 if (ctx.rootState.user.profile.token) {
                     // 登录的情况下
                     updateCart({ ...goods, count }).then(res => {
-                        console.log(res)
                         return findCartList()
                     }).then(({ result }) => {
                         ctx.commit('setCartList', result)
@@ -272,7 +271,7 @@ export default {
     getters: {
         // 有效商品列表
         validList(state) {
-            return state.list.filter(item => item.stock > 0 && item.isEffective)
+            return state.list.filter(item => item.stock > 0 && item.isEffective) || []
         },
         //  有效商品件数
         validTotal(state, getters) {
