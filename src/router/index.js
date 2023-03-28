@@ -39,6 +39,10 @@ let Cart = () => import('@/view/cart/index.vue')
 
 
 
+// 下单页面
+let Checkout = ()=> import('@/view/member/pay/checkout.vue')
+
+
 
 let routes = [
     {
@@ -54,25 +58,23 @@ let routes = [
     },
     { path: '/login', component: Login },// 登录模块
     { path: "/login/callback", component: Callback },// QQ回调地址模块
+    {path:"/member/checkout",component:Checkout},// 下单结算页面
 ]
 
-
-let router = createRouter({
-    history: createWebHashHistory(),
-    routes,
-    scrollBehavior(to, from, savedPosition) {
-        // 如果有 savedPosition，则直接返回保存的位置
-        if (savedPosition) {
-            return savedPosition;
-        } else {
-            return { y: 0 };
-        }
-    }
-})
+        let router = createRouter({
+            history: createWebHashHistory(),
+            // mode: 'history',
+            routes,
+            scrollBehavior(to, from, savedPosition) {
+                // 如果有 savedPosition，则直接返回保存的位置
+                return { x: 0, y: 0 }
+            }
+        })
 
 
 
-router.beforeEach((to, from, next) => {
+// 路由前置守卫
+router.beforeEach((to   , from, next) => {
 
     // 获取是否登录
     let { profile } = store.state.user

@@ -226,8 +226,11 @@ export default {
                 }).catch(error => {
 
                 })
+            } else {
+              // 这里是有登录的情况下的
+              router.push('/member/checkout')
+
             }
-            // 这里如果是成功登录的话不需要设置跳转地址因为路由拦截器会作用
 
 
 

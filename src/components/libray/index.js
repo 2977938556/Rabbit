@@ -34,6 +34,8 @@ import Message from './Message.js'
 
 // 全局提示框
 import Confirm from './XtxConfirm.js'
+// 全局交互提示框
+import XtxDialog from './xtx-dialog.vue'
 
 export default {
     install(app) {
@@ -52,6 +54,7 @@ export default {
         app.component(XtxButton.name, XtxButton)
         app.component(XtxPagination.name, XtxPagination)
         app.component(XtxMessage.name, XtxMessage)
+        app.component(XtxDialog.name,XtxDialog)
         // 注册图片懒加载效果
         defineDirective(app)
         // 注册全局提示框

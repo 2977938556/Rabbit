@@ -7,7 +7,6 @@
 
 export default {
     name: 'XtxButton',
-
     props: {
         size: {
             type: String,

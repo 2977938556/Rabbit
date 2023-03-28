@@ -52,7 +52,7 @@ export default {
             // 清空用户的token信息
             store.commit('user/setUser', {})
             // 清空购物车数据
-            store.dispatch('cart/setCartList', [])
+            store.commit('cart/setCartList', [])
             // 跳转到登录页面
             route.push('/login')
 
