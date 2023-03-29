@@ -1,7 +1,7 @@
 <template>
     <div class="xtx-city" ref="target">
         <div class="select">
-            <span class="placeholder" @click="targetOpen" v-if="!fullLocation">选择你的收货地址</span>
+            <span class="placeholder" @click="targetOpen" v-if="!fullLocation">{{ placeholder && placeholder || '请选择收货地址' }}</span>
             <span class="value" @click="targetOpen" v-else>{{ fullLocation }}</span>
             <i class="iconfont icon-angle-down"></i>
         </div>
@@ -26,7 +26,11 @@ export default {
         fullLocation: {
             type: String,
             default: "",
-        }
+        },
+      placeholder:{
+          type:String,
+          default: ""
+      }
     },
     setup(props, { emit }) {
 

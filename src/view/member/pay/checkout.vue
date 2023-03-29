@@ -12,7 +12,8 @@
         <div class="box-body">
           <div class="address" >
         <!--  收获地址-->
-            <CheckoutAddress  @change="changeAddress" :list="checkoutInfo.userAddresses"/>
+            <CheckoutAddress :list="checkoutInfo.userAddresses"  @change="changeAddress" />
+<!--            @changeAddAddress="AddAddress"-->
           </div>
         </div>
         <!-- 商品信息 -->
@@ -29,6 +30,7 @@
             </tr>
             </thead>
             <tbody>
+<!--            商品信息列表-->
             <template v-if="checkoutInfo">
               <tr v-for="item in checkoutInfo.goods" :key="item.id">
                 <td>
@@ -87,7 +89,7 @@
         </div>
         <!-- 提交订单 -->
         <div class="submit">
-          <XtxButton type="primary">提交订单</XtxButton>
+          <XtxButton type="primary" @click="subOrder">提交订单</XtxButton>
         </div>
       </div>
     </div>
@@ -95,35 +97,61 @@
 </template>
 <script>
 // 选择收货地址模块
-import CheckoutAddress from "./component/checkout-address.vue";
+import CheckoutAddress from "./component/checkout-address.vue"
+import Message from '@/components/libray/Message.js'
 // 导入结算信息的api
-import {findCheckoutInfo} from '@/api/order.js'
-import {reactive, ref} from "vue";
+import {findCheckoutInfo,createOrder} from '@/api/order.js'
+import {reactive, ref} from "vue"
+import Login from "../../login/index.vue";
+import {useRouter} from "vue-router/dist/vue-router.mjs";
+
 export default {
   name: 'Checkout',
   components:{CheckoutAddress},
   setup() {
+    let router = useRouter()
     // 收集获取的商品数据
     let checkoutInfo = ref({})
     findCheckoutInfo().then(({result}) => {
       checkoutInfo.value = result
+      requestParams.goods = result.goods.map(({skuId,count})=>({skuId,count}))
     })
 
 
-
-    // 需要提交的字段
+    // 需要提交的订单字段
     const requestParams = reactive({
-      addressId: null
+          addressId: null,
+          deliveryTimeType: 1,
+          payType: 1,
+          buyerMessage: '',
+          goods: []
     })
 
-    // 切换地址
+    // 选择地址的组件
     const changeAddress = (value) => {
+      // 选择组件的时候将地址id传递回去
       requestParams.addressId = value.id
     }
 
 
 
-    return {checkoutInfo,changeAddress}
+
+
+    // 提交
+    let subOrder = () =>{
+      // 判读是否有有地址id
+      if (!requestParams.addressId){
+          return Message({type:"success",text:"请选择地址",})
+      } else {
+        // 有数据那么就提交订单并且跳转到支付页面
+        createOrder(requestParams).then(result=>{
+          console.log(result)
+          router.push(`/member/pay/orderId=${result.result.id}`)
+        })
+      }
+    }
+
+    return {checkoutInfo,changeAddress,requestParams,subOrder}
   }
 
 
