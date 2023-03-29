@@ -40,7 +40,7 @@ let Cart = () => import('@/view/cart/index.vue')
 
 
 // 下单页面
-let Checkout = ()=> import('@/view/member/pay/checkout.vue')
+let Checkout = () => import('@/view/member/pay/checkout.vue')
 
 
 // 下单结算页面
@@ -56,8 +56,8 @@ let routes = [
             { path: '/category/sub/:id', component: SubCategory }, // 商品分类第二级
             { path: '/product/:id', component: Goods },//商品详情模块
             { path: '/cart', name: 'cart', component: Cart },// 购物车模块
-            { path:"/member/checkout",component:Checkout},// 下单结算页面
-            { path:"/member/pay",component:SettleAccount},// 支付页面
+            { path: "/member/checkout", component: Checkout },// 下单结算页面
+            { path: "/member/pay", component: SettleAccount },// 支付页面
         ]
     },
     { path: '/login', component: Login },// 登录模块
@@ -65,20 +65,20 @@ let routes = [
 
 ]
 
-        let router = createRouter({
-            history: createWebHashHistory(),
-            // mode: 'history',
-            routes,
-            scrollBehavior(to, from, savedPosition) {
-                // 如果有 savedPosition，则直接返回保存的位置
-                return { x: 0, y: 0 }
-            }
-        })
+let router = createRouter({
+    history: createWebHashHistory(),
+    // mode: 'history',
+    routes,
+    scrollBehavior(to, from, savedPosition) {
+        // 如果有 savedPosition，则直接返回保存的位置
+        return { x: 0, y: 0 }
+    }
+})
 
 
 
 // 路由前置守卫
-router.beforeEach((to   , from, next) => {
+router.beforeEach((to, from, next) => {
     // 获取是否登录
     let { profile } = store.state.user
 
@@ -89,9 +89,6 @@ router.beforeEach((to   , from, next) => {
     next()
 
 })
-
-
-
 
 
 export default router;

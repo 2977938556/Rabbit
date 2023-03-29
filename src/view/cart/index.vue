@@ -227,10 +227,11 @@ export default {
 
                 })
             } else {
-              // 这里是有登录的情况下的
-              router.push('/member/checkout')
+                // 这里是有登录的情况下的
+                router.push('/member/checkout')
 
             }
+
 
 
 
