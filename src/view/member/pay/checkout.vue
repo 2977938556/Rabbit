@@ -103,7 +103,7 @@ import Message from '@/components/libray/Message.js'
 import {findCheckoutInfo,createOrder} from '@/api/order.js'
 import {reactive, ref} from "vue"
 import Login from "../../login/index.vue";
-import {useRouter} from "vue-router/dist/vue-router.mjs";
+import {useRouter} from "vue-router";
 
 export default {
   name: 'Checkout',
@@ -145,8 +145,8 @@ export default {
       } else {
         // 有数据那么就提交订单并且跳转到支付页面
         createOrder(requestParams).then(result=>{
-          console.log(result)
-          router.push(`/member/pay/orderId=${result.result.id}`)
+          // 跳转到订单页面
+          router.push(`/member/pay?id=${result.result.id}`);
         })
       }
     }

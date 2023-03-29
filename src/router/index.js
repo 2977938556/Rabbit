@@ -43,6 +43,9 @@ let Cart = () => import('@/view/cart/index.vue')
 let Checkout = ()=> import('@/view/member/pay/checkout.vue')
 
 
+// 下单结算页面
+let SettleAccount = () => import('@/view/member/pay/index.vue')
+
 
 let routes = [
     {
@@ -53,12 +56,13 @@ let routes = [
             { path: '/category/sub/:id', component: SubCategory }, // 商品分类第二级
             { path: '/product/:id', component: Goods },//商品详情模块
             { path: '/cart', name: 'cart', component: Cart },// 购物车模块
-
+            { path:"/member/checkout",component:Checkout},// 下单结算页面
+            { path:"/member/pay",component:SettleAccount},// 支付页面
         ]
     },
     { path: '/login', component: Login },// 登录模块
     { path: "/login/callback", component: Callback },// QQ回调地址模块
-    {path:"/member/checkout",component:Checkout},// 下单结算页面
+
 ]
 
         let router = createRouter({
@@ -75,7 +79,6 @@ let routes = [
 
 // 路由前置守卫
 router.beforeEach((to   , from, next) => {
-
     // 获取是否登录
     let { profile } = store.state.user
 
