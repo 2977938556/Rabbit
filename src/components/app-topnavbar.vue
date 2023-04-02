@@ -3,7 +3,8 @@
         <div class="container">
             <ul>
                 <template v-if="ShowNavBar">
-                    <li><a href="javascript:;"><i class="iconfont icon-user"></i>{{ ShowNavBar.account }}</a></li>
+                    <li><router-link to="/member"><i class="iconfont icon-user"></i>{{ ShowNavBar.account
+                    }}</router-link></li>
                     <li><a href="javascript:;" @click="outLogin">退出登录</a></li>
                 </template>
                 <template v-else>

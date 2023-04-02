@@ -11,12 +11,12 @@
         <span class="icon iconfont icon-queren2"></span>
         <div class="tip">
           <p>订单提交成功！请尽快完成支付。</p>
-          <p>支付还剩 <span>{{trimText}}</span>, 超时后将取消订单</p>
-<!--          <p>订单超时</p>-->
+          <p>支付还剩 <span>{{ trimText }}</span>, 超时后将取消订单</p>
+          <!--          <p>订单超时</p>-->
         </div>
         <div class="amount">
           <span>应付总额：</span>
-          <span>¥{{order.payMoney}}.00</span>
+          <span>¥{{ order.payMoney }}.00</span>
         </div>
       </div>
       <!-- 付款方式 -->
@@ -25,7 +25,7 @@
         <div class="item">
           <p>支付平台</p>
           <a class="btn wx" href="javascript:;"></a>
-          <a class="btn alipay" href="javascript:;"></a>
+          <a class="btn alipay" @click="visibleDialog = true" :href="payUrl"></a>
         </div>
         <div class="item">
           <p>支付方式</p>
@@ -37,73 +37,123 @@
         </div>
       </div>
     </div>
+
+
+    <!-- 订单弹窗 -->
+    <XtxDialog title="正在支付..." v-model:visible="visibleDialog">
+      <div class="pay-wait">
+        <img src="@/assets/images/load.gif" alt="">
+        <div v-if="order">
+          <p>如果支付成功：</p>
+          <RouterLink :to="`/member/order/${order.id}`">查看订单详情></RouterLink>
+          <p>如果支付失败：</p>
+          <RouterLink to="/">查看相关疑问></RouterLink>
+        </div>
+      </div>
+    </XtxDialog>
+
+
+
+
   </div>
 </template>
 <script>
 import { useRoute } from 'vue-router'
-import {findOrder} from '@/api/order.js'
-import {ref} from "vue"
+import { findOrder } from '@/api/order.js'
+import { ref } from "vue"
 
-import  {orderCountDown} from '@/hooks/index.js'
+import { orderCountDown } from '@/hooks/index.js'
 
+// 这里是拿到后台的基准服务地址
+import { baseURL } from '@/utils/request.js'
 
 export default {
   name: 'XtxPayPage',
-  setup(){
+  setup() {
 
     // 路由信息
     const route = useRoute()
     let order = ref(null)
 
     // 通过订单编号获取订单
-    findOrder(route.query.id).then(({result})=>{
-      order.value= result
+    findOrder(route.query.id).then(({ result }) => {
+      order.value = result
       // 这里是如果订单毫秒数大于了返回的判断是否为有效的订单
       // 如果是的话就执行倒计时
-      if(result.countyCode>result.countdown){
+      if (result.countyCode > result.countdown) {
         start(Number(result.countyCode))
       }
     })
 
-  let {start,trimText } = orderCountDown()
+    // 倒计时
+    let { start, trimText } = orderCountDown()
 
 
-    return {order,trimText}
+    // 需要拼接支付回调的地址
+    // 支付地址
+    // const payUrl = '后台服务基准地址+支付页面地址+订单ID+回跳地址'
+    const redirect = encodeURIComponent('http://localhost:8080/#/pay/callback')
+    const payUrl = `${baseURL}pay/aliPay?orderId=${route.query.id}&redirect=${redirect}`
+
+    // 订单弹窗
+    let visibleDialog = ref(false)
+
+    return { order, trimText, payUrl, visibleDialog }
 
   }
 }
 </script>
 <style scoped lang="less">
+.pay-wait {
+  display: flex;
+  justify-content: space-around;
+
+  p {
+    margin-top: 30px;
+    font-size: 14px;
+  }
+
+  a {
+    color: @xtxColor;
+  }
+}
+
 .pay-info {
   background: #fff;
   display: flex;
   align-items: center;
   height: 240px;
   padding: 0 80px;
+
   .icon {
     font-size: 80px;
     color: #1dc779;
   }
+
   .tip {
     padding-left: 10px;
     flex: 1;
+
     p {
       &:first-child {
         font-size: 20px;
         margin-bottom: 5px;
       }
+
       &:last-child {
         color: #999;
         font-size: 16px;
       }
     }
   }
+
   .amount {
     span {
       &:first-child {
         font-size: 16px;
         color: #999;
       }
+
       &:last-child {
         color: @priceColor;
         font-size: 20px;
@@ -111,19 +161,23 @@ export default {
     }
   }
 }
+
 .pay-type {
   margin-top: 20px;
   background-color: #fff;
   padding-bottom: 70px;
+
   p {
     line-height: 70px;
     height: 70px;
     padding-left: 30px;
     font-size: 16px;
+
     &.head {
       border-bottom: 1px solid #f5f5f5;
     }
   }
+
   .btn {
     width: 150px;
     height: 50px;
@@ -133,13 +187,16 @@ export default {
     margin-left: 30px;
     color: #666666;
     display: inline-block;
+
     &.active,
     &:hover {
       border-color: @xtxColor;
     }
+
     &.alipay {
       background: url(https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/7b6b02396368c9314528c0bbd85a2e06.png) no-repeat center / contain;
     }
+
     &.wx {
       background: url(https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/c66f98cff8649bd5ba722c2e8067c6ca.jpg) no-repeat center / contain;
     }

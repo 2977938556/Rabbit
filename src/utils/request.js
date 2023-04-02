@@ -7,7 +7,7 @@ import router from "@/router";
 export const baseURL = 'https://pcapi-xiaotuxian-front-devtest.itheima.net/'
 
 const instance = axios.create({
-    baseURL: "https://pcapi-xiaotuxian-front-devtest.itheima.net/",
+    baseURL,
     timeout: 5000
 })
 

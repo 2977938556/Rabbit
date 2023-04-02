@@ -19,12 +19,15 @@ import 'normalize.css'
 import '@/assets/styles/common.less'
 
 
+// 使用mock模拟数据
+import '@/mock/index.js'
+
+
+
 
 // 注册插件 UI 骨架
 import UI from '@/components/libray/index.js'
 app.use(UI)
-
-
 
 
 
