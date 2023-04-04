@@ -37,6 +37,12 @@ import Confirm from './XtxConfirm.js'
 // 全局交互提示框
 import XtxDialog from './xtx-dialog.vue'
 
+
+// tab组件
+import XtxTabs from './xtx-tabs.vue'
+// tab组合组件
+import XtxTabsPanel from './xtx-tabs-panel.vue'
+
 export default {
     install(app) {
         // 在app上进行扩展，app提供 component directive 函数
@@ -54,7 +60,9 @@ export default {
         app.component(XtxButton.name, XtxButton)
         app.component(XtxPagination.name, XtxPagination)
         app.component(XtxMessage.name, XtxMessage)
-        app.component(XtxDialog.name,XtxDialog)
+        app.component(XtxDialog.name, XtxDialog)
+        app.component(XtxTabs.name, XtxTabs)
+        app.component(XtxTabsPanel.name, XtxTabsPanel)
         // 注册图片懒加载效果
         defineDirective(app)
         // 注册全局提示框

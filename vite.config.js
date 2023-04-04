@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import path from 'path'
+import vueJsx from "@vitejs/plugin-vue-jsx"
 // import imageBase64 from 'vite-plugin-image-base64'
 
 // https://vitejs.dev/config/
@@ -9,8 +10,10 @@ export default defineConfig({
     port: 8080,
     host: true
   },
-  plugins: [vue()],
-
+  plugins: [
+    vue(),
+    vueJsx()
+  ],
   resolve: {
     // 目录别名
     alias: {

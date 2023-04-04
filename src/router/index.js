@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHashHistory, RouterView } from 'vue-router'
 
 import { h } from 'vue'
 
@@ -79,7 +79,7 @@ let routes = [
             { path: "/member/pay", component: SettleAccount },// 支付页面
             { path: '/pay/callback', component: Result },// 支付结果页面
             {
-                path: '/member', component: UserLayout, children: [// 个人中心页面
+                path: '/member', component: UserLayout, children: [// 个人中心页面 
                     { path: '/member', component: UserLayoutHome },// 加载的个人中心的首页
 
                     // 以下的方式会导致类名没有被添加上
@@ -89,7 +89,7 @@ let routes = [
                     // 这个方式是为了深度层次添加激活类名
                     {
                         path: '/member/order',
-                        component: { render: () => h('RouterView') },
+                        component: { render: () => h(RouterView) },
                         children: [
                             { path: '', component: MemberOrder },// 个人订单页面
                             { path: ':id', component: MemberOrderDetail }// 个人订单详情页面

@@ -111,7 +111,6 @@ export default {
         })
 
 
-
         // 按钮点击事件 自定义事件发送此次点击的数据给调用者
         let changePage = (val) => {
             emit('changePageData', val)
