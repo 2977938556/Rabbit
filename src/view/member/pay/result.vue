@@ -39,7 +39,6 @@ export default {
         // 这里是用户获取数据展示价格
         findOrder(route.query.orderId).then(({ result }) => {
             Order.value = result
-            console.log(Order.value);
         })
 
 

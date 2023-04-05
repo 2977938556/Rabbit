@@ -1,12 +1,9 @@
 <template>
     <div class="member-order">
-        <!-- 使用一下取消组件 -->
-        <OrderCancel ref="targetOrder"></OrderCancel>
 
         <!-- 这里是设置tab切换栏 -->
         <XtxTabs v-model="activeName" @update:modelValue="changeTab">
-            <XtxTabsPanel v-for="item in orderStatus" :key="item.name" :name="item.name" :label="item.label">{{ item.label
-            }}</XtxTabsPanel>
+            <XtxTabsPanel v-for="item in orderStatus" :key="item.name" :name="item.name" :label="item.label"></XtxTabsPanel>
         </XtxTabs>
 
         <!-- lodin 加载状态 -->
@@ -16,14 +13,15 @@
 
 
         <!-- 订单列表 -->
-        <div class="order-list" v-if="orderList && orderList.length != 0">
+        <div class="order-list">
             <OrderItem @on-cancel-order="cancelOrder" @on-deldete-order="deleteOrderShanchu"
-                @on-confirm-order="useConfirmOrder" v-for="item in orderList" :order="item" :key="item.id" />
+                @on-confirm-order="useConfirmOrder" @on-confirm-logistics="confirmLogistics" v-for="item in orderList"
+                :order="item" :key="item.id" />
         </div>
 
 
         <!-- 没有数据的情况 -->
-        <div class="order-err" v-else>
+        <div class="order-err" v-if="orderList.length == 0">
             <h1>没有数据哦 </h1>
         </div>
 
@@ -36,6 +34,13 @@
 
 
 
+
+        <!-- 使用一下取消组件 -->
+        <OrderCancel ref="targetOrder"></OrderCancel>
+
+
+        <!-- 使用一下查看物流组件 -->
+        <OrderLogistics ref="targetConfirmLogincs" />
 
 
 
@@ -62,14 +67,17 @@ import Message from '@/components/libray/Message'
 // 导入加载状态组件
 import OrderLoding from './component/order-loding.vue'
 
-// 导入取消组件
+// 导入取消订单组件
 import OrderCancel from './component/order-cancel.vue'
+// 导入确认收货组件
 import XtxConfirm from '@/components/libray/XtxConfirm.js'
+// 导入查看物流组件
+import OrderLogistics from './component/order-logistics.vue'
 
 
 export default {
     name: 'MemberOrder',
-    components: { OrderItem, OrderLoding, OrderCancel },
+    components: { OrderItem, OrderLoding, OrderCancel, OrderLogistics },
     setup() {
 
         // 控制显示那个tab
@@ -88,7 +96,6 @@ export default {
 
         // 这个是切换tab模块的
         let changeTab = ({ name, index }) => {
-            console.log(name, index);
             // 先清空数据
             orderList.value = []
             // 这里是修改选中那哪个tab栏目
@@ -115,7 +122,7 @@ export default {
         // 加载效果
         let loding = ref(false)
 
-
+        // 根据订单获取数据
         let findOrder = () => {
             orderList.value = []
             loding.value = true
@@ -131,14 +138,10 @@ export default {
             })
         }
 
-
-
         // 监听函数
         watch(finCount, (newValue) => {
             findOrder()
         }, { immediate: true })
-
-
 
 
         return { activeName, changeTab, orderStatus, orderList, finCount, loding, changePageData, ...CrubOrder(), findOrder }
@@ -147,10 +150,10 @@ export default {
 }
 
 
-
 // 将取消订单逻辑分离出去
 let CrubOrder = () => {
-    // 这里需要获取 取消对话框 实例组件
+
+    // 这个是获取取消订单的实例组件
     let targetOrder = ref(null)
 
     // 取消订单
@@ -181,19 +184,29 @@ let CrubOrder = () => {
     // 确认收货
     let useConfirmOrder = (order) => {
         XtxConfirm({ title: "确认收货", text: "您确认收货吗" }).then(() => {
-            confirmOrder(order.id).then((result) => {
+            confirmOrder(order.id).then(() => {
                 // 需要修改状态
                 order.orderState = 5
                 // 删除失败提示
                 return Message({ type: "success", text: "确认收货成功" })
             }).catch(() => {
                 // 删除失败提示
-                return Message({ type: "error", text: "删除失败哦" })
+                return Message({ type: "error", text: "确认收货成功" })
             })
         }).catch(() => { })
     }
 
-    return { cancelOrder, targetOrder, deleteOrderShanchu, useConfirmOrder }
+
+
+    // 获取查看物流的实例组件
+    let targetConfirmLogincs = ref(null)
+
+    // 查看物流
+    let confirmLogistics = (order) => {
+        targetConfirmLogincs.value.open(order)
+    }
+
+    return { cancelOrder, targetOrder, deleteOrderShanchu, useConfirmOrder, confirmLogistics, targetConfirmLogincs }
 }
 
 

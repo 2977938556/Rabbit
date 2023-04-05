@@ -181,7 +181,6 @@ export default {
 
         // 点击加入购物车获取数据
         let changes = () => {
-            console.log("数据数据", countArr.value)
             // 这里需要判断是否选中了
             if (!countArr.value) {
                 Message({ type: "error", text: "请选商品的规格" })

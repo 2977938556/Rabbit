@@ -10,10 +10,10 @@
         <!-- 收货地址 -->
         <h3 class="box-title">收货地址</h3>
         <div class="box-body">
-          <div class="address" >
-        <!--  收获地址-->
-            <CheckoutAddress :list="checkoutInfo.userAddresses"  @change="changeAddress" />
-<!--            @changeAddAddress="AddAddress"-->
+          <div class="address">
+            <!--  收获地址-->
+            <CheckoutAddress :list="checkoutInfo.userAddresses" @change="changeAddress" />
+            <!--            @changeAddAddress="AddAddress"-->
           </div>
         </div>
         <!-- 商品信息 -->
@@ -21,33 +21,33 @@
         <div class="box-body">
           <table class="goods">
             <thead>
-            <tr>
-              <th width="520">商品信息</th>
-              <th width="170">单价</th>
-              <th width="170">数量</th>
-              <th width="170">小计</th>
-              <th width="170">实付</th>
-            </tr>
+              <tr>
+                <th width="520">商品信息</th>
+                <th width="170">单价</th>
+                <th width="170">数量</th>
+                <th width="170">小计</th>
+                <th width="170">实付</th>
+              </tr>
             </thead>
             <tbody>
-<!--            商品信息列表-->
-            <template v-if="checkoutInfo">
-              <tr v-for="item in checkoutInfo.goods" :key="item.id">
-                <td>
-                  <a class="info" href="javascript:;">
-                    <img alt="" :src="item.picture">
-                    <div class="right">
-                      <p>{{item.name}}</p>
-                      <p>{{item.attrsText}}</p>
-                    </div>
-                  </a>
-                </td>
-                <td>&yen;{{item.price}}</td>
-                <td>{{item.count}}</td>
-                <td>&yen;{{item.totalPayPrice}}</td>
-                <td>&yen;{{item.totalPrice}}</td>
-              </tr>
-            </template>
+              <!--            商品信息列表-->
+              <template v-if="checkoutInfo">
+                <tr v-for="item in checkoutInfo.goods" :key="item.id">
+                  <td>
+                    <a class="info" href="javascript:;">
+                      <img alt="" :src="item.picture">
+                      <div class="right">
+                        <p>{{ item.name }}</p>
+                        <p>{{ item.attrsText }}</p>
+                      </div>
+                    </a>
+                  </td>
+                  <td>&yen;{{ item.price }}</td>
+                  <td>{{ item.count }}</td>
+                  <td>&yen;{{ item.totalPayPrice }}</td>
+                  <td>&yen;{{ item.totalPrice }}</td>
+                </tr>
+              </template>
             </tbody>
           </table>
         </div>
@@ -100,31 +100,47 @@
 import CheckoutAddress from "./component/checkout-address.vue"
 import Message from '@/components/libray/Message.js'
 // 导入结算信息的api
-import {findCheckoutInfo,createOrder} from '@/api/order.js'
-import {reactive, ref} from "vue"
-import Login from "../../login/index.vue";
-import {useRouter} from "vue-router";
+import { findCheckoutInfo, createOrder, findOrderRepurchase } from '@/api/order.js'
+import { reactive, ref } from "vue"
+import { useRoute, useRouter } from "vue-router";
 
 export default {
   name: 'Checkout',
-  components:{CheckoutAddress},
+  components: { CheckoutAddress },
   setup() {
     let router = useRouter()
-    // 收集获取的商品数据
+    let route = useRoute()
     let checkoutInfo = ref({})
-    findCheckoutInfo().then(({result}) => {
-      checkoutInfo.value = result
-      requestParams.goods = result.goods.map(({skuId,count})=>({skuId,count}))
-    })
+
+
+    // 这里就是需要进行判断是不是再次购买 有id就是
+    if (route.query.orderId) {
+      findOrderRepurchase(route.query.orderId).then(({ result }) => {
+        checkoutInfo.value = result
+        requestParams.goods = result.goods.map(({ skuId, count }) => ({ skuId, count }))
+      })
+    } else {
+      // 收集获取的商品数据
+      findCheckoutInfo().then(({ result }) => {
+        checkoutInfo.value = result
+        requestParams.goods = result.goods.map(({ skuId, count }) => ({ skuId, count }))
+      })
+
+    }
+
+
+
+
+
 
 
     // 需要提交的订单字段
     const requestParams = reactive({
-          addressId: null,
-          deliveryTimeType: 1,
-          payType: 1,
-          buyerMessage: '',
-          goods: []
+      addressId: null,
+      deliveryTimeType: 1,
+      payType: 1,
+      buyerMessage: '',
+      goods: []
     })
 
     // 选择地址的组件
@@ -138,20 +154,20 @@ export default {
 
 
     // 提交
-    let subOrder = () =>{
+    let subOrder = () => {
       // 判读是否有有地址id
-      if (!requestParams.addressId){
-          return Message({type:"success",text:"请选择地址",})
+      if (!requestParams.addressId) {
+        return Message({ type: "success", text: "请选择地址", })
       } else {
         // 有数据那么就提交订单并且跳转到支付页面
-        createOrder(requestParams).then(result=>{
+        createOrder(requestParams).then(result => {
           // 跳转到订单页面
           router.push(`/member/pay?id=${result.result.id}`);
         })
       }
     }
 
-    return {checkoutInfo,changeAddress,requestParams,subOrder}
+    return { checkoutInfo, changeAddress, requestParams, subOrder }
   }
 
 
@@ -213,7 +229,8 @@ export default {
       font-weight: normal;
     }
 
-    td, th {
+    td,
+    th {
       text-align: center;
       padding: 20px;
       border-bottom: 1px solid #f5f5f5;
@@ -239,7 +256,8 @@ export default {
   color: #666666;
   display: inline-block;
 
-  &.active, &:hover {
+  &.active,
+  &:hover {
     border-color: @xtxColor;
   }
 }

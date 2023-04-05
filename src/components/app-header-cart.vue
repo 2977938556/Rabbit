@@ -58,9 +58,7 @@ export default {
 
         let DeleteItem = (item) => {
             store.dispatch('cart/deleteCart', item).then(res => {
-                console.log("成功删除")
             }).catch(e => {
-                console.log("删除失败")
             })
         }
 

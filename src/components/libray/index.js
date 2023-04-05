@@ -43,6 +43,12 @@ import XtxTabs from './xtx-tabs.vue'
 // tab组合组件
 import XtxTabsPanel from './xtx-tabs-panel.vue'
 
+
+// 步骤条
+import XtxSteps from './xtx-steps.vue'
+// 步骤条单个itme组件
+import XtxStepsItem from './xtx-steps-item.vue'
+
 export default {
     install(app) {
         // 在app上进行扩展，app提供 component directive 函数
@@ -63,6 +69,8 @@ export default {
         app.component(XtxDialog.name, XtxDialog)
         app.component(XtxTabs.name, XtxTabs)
         app.component(XtxTabsPanel.name, XtxTabsPanel)
+        app.component(XtxSteps.name, XtxSteps)
+        app.component(XtxStepsItem.name, XtxStepsItem)
         // 注册图片懒加载效果
         defineDirective(app)
         // 注册全局提示框

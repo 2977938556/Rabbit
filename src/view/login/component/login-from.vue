@@ -121,7 +121,6 @@ export default {
         let router = useRouter()
         let route = useRoute()
 
-        // console.log("数据", window.qc.Login)
 
 
         // 生成qq登陆链接

@@ -1,10 +1,21 @@
 import request from '@/utils/request.js'
 
 /**
- * 获取结算信息
+ * 购物车获取结算信息
  */
 export const findCheckoutInfo = () => {
   return request('/member/order/pre', 'get')
+}
+
+
+
+/**
+ * 获取再次购买的订单结算信息
+ * @param {String} id - 订单ID
+ * @returns
+ */
+export const findOrderRepurchase = (id) => {
+  return request(`/member/order/repurchase/${id}`, 'get')
 }
 
 
@@ -74,8 +85,6 @@ export const cancelOrder = ({ orderId, cancelReason }) => {
 
 
 
-
-
 // 删除订单
 export const delteOrder = (ids) => {
   return request('/member/order', 'delete', { ids })
@@ -86,4 +95,14 @@ export const delteOrder = (ids) => {
 // 确认收货
 export const confirmOrder = (id) => {
   return request(`/member/order/${id}/receipt`, 'put')
+}
+
+
+/**
+ * 查看物流信息
+ * @param {String} id - 订单ID
+ * @returns
+ */
+export const logisticsOrder = (id) => {
+  return request(`/member/order/${id}/logistics`, 'get')
 }
